@@ -14,17 +14,24 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
     private static final Stone[][][] board = new Stone[3][3][3];
 
     private BoardPanel panel = new BoardPanel();
-    private final LogicDealer logic = new LogicDealer();
+    private String playerOne;
+    private String playerTwo;
+    private final LogicDealer logic;
     private String player;
     private int Phase = -1;
+    private final int MAX_STONES = 18;
+    private int maxStones;
     int radius = panel.getWidth() / 14;
     int circleDiameter = 30;
     int circleRadius = circleDiameter / 2;
 
 
-    public BoardFrame(String player) throws HeadlessException {
-        this.player = player;
+    public BoardFrame(String playerOne, String playerTwo) throws HeadlessException {
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
 
+        logic = new LogicDealer(playerOne,playerTwo);
+        newGame();
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.setSize(1080,720);
@@ -33,6 +40,22 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
         this.setVisible(true);
     }
 
+    private void newGame(){
+        setPlayer();
+        this.Phase = 1;
+        maxStones = MAX_STONES;
+    }
+    private void setPlayer(){
+        if(player == null){
+            player = playerOne;
+        }else if(player.equalsIgnoreCase(playerOne)){
+            player = playerTwo;
+        }else  if(player.equalsIgnoreCase(playerTwo)){
+            player = playerOne;
+        }else {
+            System.err.println("[Board] Error at Player!");
+        }
+    }
     @Override
     public void mouseDragged(MouseEvent e) {
 
@@ -121,6 +144,9 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
             }
             if(stone != null){
                 logic.placeStone(stone);
+                board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = stone;
+                panel.placeStone(stone);
+                setPlayer();
             }
         }
     }

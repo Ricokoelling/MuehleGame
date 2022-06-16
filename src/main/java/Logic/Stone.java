@@ -29,4 +29,14 @@ public class Stone {
     public String getPlayer() {
         return player;
     }
+
+    @Override
+    public String toString() {
+        return "Stone{" +
+                "player='" + player + '\'' +
+                ", posOne=" + posOne +
+                ", posTwo=" + posTwo +
+                ", posThree=" + posThree +
+                '}';
+    }
 }
