@@ -46,6 +46,10 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Muehle&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
 }</component>
@@ -81,6 +85,11 @@
       <updated>1655329130381</updated>
       <workItem from="1655329132057" duration="3744000" />
       <workItem from="1655419073606" duration="3033000" />
+      <workItem from="1655731127777" duration="53000" />
+      <workItem from="1667249564640" duration="1292000" />
+      <workItem from="1667352918616" duration="4721000" />
+      <workItem from="1667506322571" duration="15648000" />
+      <workItem from="1667557461002" duration="3056000" />
     </task>
     <servers />
   </component>
@@ -100,5 +109,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Muehle$Main.ic" NAME="Main Coverage Results" MODIFIED="1667249573430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

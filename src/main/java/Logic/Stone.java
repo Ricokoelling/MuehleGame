@@ -1,11 +1,13 @@
 package Logic;
 
+import java.util.Objects;
+
 public class Stone {
 
-    private String player;
-    private int posOne;
-    private int posTwo;
-    private int posThree;
+    private final String player;
+    private final int posOne;
+    private final int posTwo;
+    private final int posThree;
 
     public Stone(String player, int posOne, int posTwo, int posThree) {
         this.player = player;
@@ -30,6 +32,9 @@ public class Stone {
         return player;
     }
 
+    public boolean equal(Stone stone){
+        return stone.getPosOne() == this.getPosOne() && stone.getPosTwo() == this.getPosTwo() && stone.getPosThree() == this.getPosThree() && Objects.equals(stone.getPlayer(), this.getPlayer());
+    }
     @Override
     public String toString() {
         return "Stone{" +

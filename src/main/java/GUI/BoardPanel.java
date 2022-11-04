@@ -4,18 +4,35 @@ import Logic.Stone;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class BoardPanel extends JPanel {
 
-    private Color playerOne = Color.BLACK;
-    private Color playerTwo = Color.CYAN;
-    private Stone[][][] board = new Stone[3][3][3];
+    private final Color playerone_stone_color = Color.BLACK;
+    private final Color playertwo_stone_color = Color.CYAN;
+    private String player_one_name;
+    private String player_two_name;
+    private final Stone[][][] board = new Stone[3][3][3];
     public BoardPanel() {
         this.setSize(1080,720);
         this.setVisible(true);
     }
+
+    public void setPlayer_one_name(String player_one_name) {
+        this.player_one_name = player_one_name;
+    }
+
+    public void setPlayer_two_name(String player_two_name) {
+        this.player_two_name = player_two_name;
+    }
+
     protected void placeStone(Stone stone){
         board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = stone;
+        repaint();
+    }
+
+    protected void remove(Stone stone){
+        board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = null;
         repaint();
     }
 
@@ -30,12 +47,20 @@ public class BoardPanel extends JPanel {
         int radius = this.getWidth() / 14;
         int circleDiameter = 50;
         int circleRadius = circleDiameter / 2;
+        if(Objects.equals(player, player_one_name)){
+            g2D.setColor(playerone_stone_color);
+        }else if(Objects.equals(player, player_two_name)){
+            g2D.setColor(playertwo_stone_color);
+        }else{
+            System.err.println("[PANEL] Wrong Playername!");
+        }
 
         if(pos == -1){
             System.err.println("[Panel] Wrong Pos!");
         }else if(pos == 0){
             System.out.println("[Panel] Init");
         }
+
         switch (pos) {
             case 1 -> g2D.fillOval((this.getWidth() / 2) - radius * 3 - circleRadius, (this.getHeight() / 2) - radius * 3 - circleRadius, circleDiameter, circleDiameter);
             case 2 -> g2D.fillOval((this.getWidth() / 2) - radius * 3 + radius * 3 - circleRadius, (this.getHeight() / 2) - radius * 3 - circleRadius, circleDiameter, circleDiameter);
