@@ -197,7 +197,7 @@ public class LogicDealer {
                 }
             }
         } else if (Objects.equals(player, playerTwo)) {
-            for (Stone[] stones : player_one_mill) {
+            for (Stone[] stones : player_two_mill) {
                 for(Stone s : stones){
                     if(s.equal(stone)){
                         return false;
@@ -216,13 +216,12 @@ public class LogicDealer {
      * @return true -> there are only mills
      */
     private boolean onlymills(String player){
-        System.out.println("[LOGIC] There are only mills!");
         if(Objects.equals(playerOne,player)){
             for (Stone[] stones : player_one_mill) {
                 for (Stone temp : stones) {
                     for(Stone stone : playerOneStones){
                         if(stone.equal(temp)){
-                            return true;
+                            return false;
                         }
                     }
                 }
@@ -232,7 +231,7 @@ public class LogicDealer {
                 for (Stone temp : stones) {
                     for(Stone stone : playerTwoStones){
                         if(stone.equal(temp)){
-                            return true;
+                            return false;
                         }
                     }
                 }
@@ -240,7 +239,7 @@ public class LogicDealer {
         }else {
             System.err.println("[LOGIC] Wrong Player!");
         }
-        return false;
+        return true;
     }
 
     public boolean remove(Stone stone, String player){
