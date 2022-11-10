@@ -18,17 +18,17 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
     private final String playerTwo_name;
     private final BoardPanel panel = new BoardPanel();
     private final LogicDealer logic;
-    private String player;
-    private String opposite_player;
-    private int phase = -1;
     private final int MAX_STONES = 18;
-    private int player_one_stones = 0;
-    private int player_two_stones = 0;
-    private int maxStones;
     int radius = panel.getWidth() / 14;
     int circleDiameter = 30;
     int circleRadius = circleDiameter / 2;
-
+    private String player;
+    private String opposite_player;
+    private int phase = -1;
+    private int player_one_stones = 0;
+    private int player_two_stones = 0;
+    private int maxStones;
+    private Stone stone_pressed = null;
     //checking variables
     private boolean phase_0_wrong_player_check = false;
 
@@ -37,49 +37,55 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
         this.playerOne_name = playerOne;
         this.playerTwo_name = playerTwo;
 
-        logic = new LogicDealer(playerOne,playerTwo);
+        logic = new LogicDealer(playerOne, playerTwo);
         newGame();
         panel.setPlayer_one_name(playerOne_name);
         panel.setPlayer_two_name(playerTwo_name);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
-        this.setSize(1080,720);
+        this.setSize(1080, 720);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.add(panel);
         this.setVisible(true);
     }
 
-    private void newGame(){
+    private void newGame() {
         this.phase = 1;
         maxStones = MAX_STONES;
         setPlayer();
     }
-    private void setPlayer(){
-        if(player == null){
+
+    private void setPlayer() {
+        if (player == null) {
             player = playerOne_name;
             opposite_player = playerTwo_name;
-        }else if(player.equalsIgnoreCase(playerOne_name)){
+        } else if (player.equalsIgnoreCase(playerOne_name)) {
             player_one_stones++;
             player = playerTwo_name;
             opposite_player = playerOne_name;
-        }else  if(player.equalsIgnoreCase(playerTwo_name)){
+        } else if (player.equalsIgnoreCase(playerTwo_name)) {
             player_two_stones++;
             player = playerOne_name;
             opposite_player = playerTwo_name;
-        }else {
+        } else {
             System.err.println("[Board] Error at Player!");
         }
-        if(player_two_stones+player_one_stones == maxStones){
+        if (phase < 2 && player_two_stones + player_one_stones == maxStones) {
             phase = 2;
-            System.out.println("[BOARD] phase changed: phase " + phase );
+            System.out.println("[BOARD] phase changed: phase " + phase);
         }
     }
+
     @Override
     public void mouseDragged(MouseEvent e) {
-        if(phase == 2) {
-            Stone stone = get_stone_position(e.getX(),e.getY());
-            if(stone != null){
-
+        if (phase == 2) {
+            Stone stone = get_stone_position(e.getX(), e.getY());
+            if (stone != null) {
+                if (!stone.equal(stone_pressed) && logic.move_possible(stone_pressed, stone, player)) {
+                    board[stone_pressed.getPosOne()][stone_pressed.getPosTwo()][stone_pressed.getPosThree()] = null;
+                    board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = stone;
+                    setPlayer();
+                }
             }
         }
     }
@@ -96,49 +102,47 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(phase == 1 || phase == 0) {
-            if(phase == 0 && !phase_0_wrong_player_check){
-                String temp = player;
-                player = opposite_player;
-                opposite_player = temp;
-            }
-            Stone stone = get_stone_position(e.getX(),e.getY());
-            if(stone != null){
-                if(phase == 0){
-                    if(logic.remove(stone,player)) {
-                        maxStones--;
-                        if (Objects.equals(player, playerOne_name)) {
-                            player_two_stones--;
-                        } else if (Objects.equals(player, playerTwo_name)) {
-                            player_one_stones--;
-                        }
-                        panel.remove(stone);
-                        board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = null;
-                        phase = 1;
-                        phase_0_wrong_player_check = false;
-                        System.out.println("[BOARD] Player: " + player + " removed a stone: [" + stone.getPosOne() + "] [" + stone.getPosTwo() + "] [" + stone.getPosThree() + "]");
-                    }else{
-                        phase_0_wrong_player_check = true;
-                        System.out.println("[BOARD] Wrong Stone!");
+        if (phase == 0 && !phase_0_wrong_player_check) {
+            String temp = player;
+            player = opposite_player;
+            opposite_player = temp;
+        }
+        stone_pressed = get_stone_position(e.getX(), e.getY());
+        if (stone_pressed != null) {
+            if (phase == 0) {
+                if (logic.remove(stone_pressed, player)) {
+                    maxStones--;
+                    if (Objects.equals(player, playerOne_name)) {
+                        player_two_stones--;
+                    } else if (Objects.equals(player, playerTwo_name)) {
+                        player_one_stones--;
                     }
-                }else if(phase == 1) {
-                    if(board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] == null) {
-                        logic.placeStone(stone);
-                        board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = stone;
-                        panel.placeStone(stone);
-                        if (player_two_stones >= 2) {
-                            if (logic.muehle(player)) {
-                                System.out.println("[BOARD] Player " + player + " removes a stone.");
-                                phase = 0;
-                            } else {
-                                setPlayer();
-                            }
+                    panel.remove(stone_pressed);
+                    board[stone_pressed.getPosOne()][stone_pressed.getPosTwo()][stone_pressed.getPosThree()] = null;
+                    phase = 1;
+                    phase_0_wrong_player_check = false;
+                    System.out.println("[BOARD] Player: " + player + " removed a stone: [" + stone_pressed.getPosOne() + "] [" + stone_pressed.getPosTwo() + "] [" + stone_pressed.getPosThree() + "]");
+                } else {
+                    phase_0_wrong_player_check = true;
+                    System.out.println("[BOARD] Wrong Stone!");
+                }
+            } else {
+                if (board[stone_pressed.getPosOne()][stone_pressed.getPosTwo()][stone_pressed.getPosThree()] == null) {
+                    logic.placeStone(stone_pressed);
+                    board[stone_pressed.getPosOne()][stone_pressed.getPosTwo()][stone_pressed.getPosThree()] = stone_pressed;
+                    panel.placeStone(stone_pressed);
+                    if (player_two_stones >= 2) {
+                        if (logic.muehle(player)) {
+                            System.out.println("[BOARD] Player " + player + " removes a stone.");
+                            phase = 0;
                         } else {
                             setPlayer();
                         }
-                    }else{
-                        System.out.println("[BOARD] There is already a stone " + stone );
+                    } else {
+                        setPlayer();
                     }
+                } else {
+                    System.out.println("[BOARD] There is already a stone " + stone_pressed);
                 }
             }
         }
@@ -159,7 +163,7 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
 
     }
 
-    private Stone get_stone_position(int position_x, int position_y ){
+    private Stone get_stone_position(int position_x, int position_y) {
         Stone stone = null;
         if (position_x > ((this.getWidth() / 2) - radius * 3) - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 3) - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 3) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) - circleRadius + 60) {   //point [1]
             stone = new Stone(this.player, 0, 0, 0);

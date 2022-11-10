@@ -32,16 +32,17 @@ public class Stone {
         return player;
     }
 
-    public boolean equal(Stone stone){
+    public boolean equal(Stone stone) {
         return stone.getPosOne() == this.getPosOne() && stone.getPosTwo() == this.getPosTwo() && stone.getPosThree() == this.getPosThree() && Objects.equals(stone.getPlayer(), this.getPlayer());
     }
+
     @Override
     public String toString() {
         return "Stone{" +
-                "player='" + player + '\'' +
-                ", posOne=" + posOne +
-                ", posTwo=" + posTwo +
-                ", posThree=" + posThree +
+                "player = '" + player + '\'' +
+                ", posOne = " + posOne +
+                ", posTwo = " + posTwo +
+                ", posThree = " + posThree +
                 '}';
     }
 }
