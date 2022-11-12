@@ -8,8 +8,7 @@ public class Main {
 
 /*
 
-TODO:   -FIX onlymills
-        -check if anything works fine
+TODO:   -fix move
         -jump one player
         -jump two player
         -win conditions

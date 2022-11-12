@@ -1,9 +1,7 @@
 package Logic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 public class LogicDealer {
 
@@ -134,11 +132,14 @@ public class LogicDealer {
                 }
             }
         }
+
         if (Objects.equals(player, playerOne)) {
             player_one_mill = temp_player_mill;
+            print_mills();
             return player_one_mill.size() > player_mill_size;
         } else if (Objects.equals(player, playerTwo)) {
             player_two_mill = temp_player_mill;
+            print_mills();
             return player_two_mill.size() > player_mill_size;
         }
         return false;
@@ -227,23 +228,15 @@ public class LogicDealer {
      */
     private boolean onlymills(String player) {
         if (Objects.equals(playerOne, player)) {
-            for (Stone[] stones : player_one_mill) {
-                for (Stone stone : playerOneStones) {
-                    if (Arrays.asList(stones).contains(stone)) {
-
-                    }
+            for (Stone stone : playerOneStones) {
+                if (check(stone, playerOne)) {
+                    return false;
                 }
             }
         } else if (Objects.equals(playerTwo, player)) {
-            for (Stone[] stones : player_two_mill) {
-                for (Stone temp : stones) {
-                    for (Stone stone : playerTwoStones) {
-                        if (!stone.equal(temp)) {
-                            System.out.println("here2: " + temp);
-                            System.out.println("under heare: " + stone);
-                            return false;
-                        }
-                    }
+            for (Stone stone : playerTwoStones) {
+                if (check(stone, playerTwo)) {
+                    return false;
                 }
             }
         } else {
@@ -252,18 +245,23 @@ public class LogicDealer {
         return true;
     }
 
+    /**
+     * checks if a stone can be removed
+     * removes a stone from the player and board
+     *
+     * @param stone  which shall be removed
+     * @param player player from which the stone will be removed
+     * @return
+     */
     public boolean remove(Stone stone, String player) {
-        System.out.println(stone);
-        System.out.println(player);
         if (stone_player(stone, player)) {
-            System.out.println(onlymills(player));
-            print_mills();
             if ((!check(stone, player) && onlymills(player)) || check(stone, player)) {
                 board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = null;
                 if (Objects.equals(player, playerOne)) {
                     for (Stone pl_one : playerOneStones) {
                         if (pl_one.equal(stone)) {
                             playerOneStones.remove(pl_one);
+                            check_for_mills();
                             return true;
                         }
                     }
@@ -271,10 +269,12 @@ public class LogicDealer {
                     for (Stone pl_two : playerTwoStones) {
                         if (pl_two.equal(stone)) {
                             playerTwoStones.remove(pl_two);
+                            check_for_mills();
                             return true;
                         }
                     }
                 } else {
+                    System.err.println("[LOGIC] Can't remove stone");
                 }
             }
         }
@@ -282,6 +282,22 @@ public class LogicDealer {
         return false;
     }
 
+    private void check_for_mills() {
+        player_one_mill.clear();
+        player_two_mill.clear();
+        muehle(playerOne);
+        muehle(playerTwo);
+    }
+
+
+    /**
+     * tests if in phase 2 the stone is able to be moved
+     *
+     * @param start       startposition
+     * @param destination endposition
+     * @param player      player who wants to move the stone
+     * @return
+     */
     public boolean move_possible(Stone start, Stone destination, String player) {
         ArrayList<Stone> temp = null;
         boolean move_is_possible = false;
@@ -326,7 +342,9 @@ public class LogicDealer {
         return move_is_possible;
     }
 
-
+    /**
+     * prints all mills
+     */
     private void print_mills() {
         int x = 0;
         System.out.println(playerOne + "'s mills:");

@@ -61,12 +61,16 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
             opposite_player = playerTwo_name;
         } else if (player.equalsIgnoreCase(playerOne_name)) {
             player_one_stones++;
-            player = playerTwo_name;
-            opposite_player = playerOne_name;
+            if (phase != 0) {
+                player = playerTwo_name;
+                opposite_player = playerOne_name;
+            }
         } else if (player.equalsIgnoreCase(playerTwo_name)) {
             player_two_stones++;
-            player = playerOne_name;
-            opposite_player = playerTwo_name;
+            if (phase != 0) {
+                player = playerOne_name;
+                opposite_player = playerTwo_name;
+            }
         } else {
             System.err.println("[Board] Error at Player!");
         }
@@ -102,7 +106,7 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (phase == 0 && !phase_0_wrong_player_check) {
+        if (phase == 0 && !phase_0_wrong_player_check && stone_pressed != null) {
             String temp = player;
             player = opposite_player;
             opposite_player = temp;
@@ -121,7 +125,7 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
                     board[stone_pressed.getPosOne()][stone_pressed.getPosTwo()][stone_pressed.getPosThree()] = null;
                     phase = 1;
                     phase_0_wrong_player_check = false;
-                    System.out.println("[BOARD] Player: " + player + " removed a stone: [" + stone_pressed.getPosOne() + "] [" + stone_pressed.getPosTwo() + "] [" + stone_pressed.getPosThree() + "]");
+                    System.out.println("[BOARD] Player: " + opposite_player + " removed a stone: [" + stone_pressed.getPosOne() + "] [" + stone_pressed.getPosTwo() + "] [" + stone_pressed.getPosThree() + "]");
                 } else {
                     phase_0_wrong_player_check = true;
                     System.out.println("[BOARD] Wrong Stone!");
@@ -131,13 +135,14 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
                     logic.placeStone(stone_pressed);
                     board[stone_pressed.getPosOne()][stone_pressed.getPosTwo()][stone_pressed.getPosThree()] = stone_pressed;
                     panel.placeStone(stone_pressed);
+                    System.out.println(player_two_stones);
+                    System.out.println("[BOARD] Player: " + player + " placed a stone: [" + stone_pressed.getPosOne() + "] [" + stone_pressed.getPosTwo() + "] [" + stone_pressed.getPosThree() + "]");
                     if (player_two_stones >= 2) {
                         if (logic.muehle(player)) {
                             System.out.println("[BOARD] Player " + player + " removes a stone.");
                             phase = 0;
-                        } else {
-                            setPlayer();
                         }
+                        setPlayer();
                     } else {
                         setPlayer();
                     }
