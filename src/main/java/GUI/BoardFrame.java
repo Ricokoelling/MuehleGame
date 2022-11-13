@@ -20,7 +20,7 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
     private final LogicDealer logic;
     private final int MAX_STONES = 18;
     int radius = panel.getWidth() / 14;
-    int circleDiameter = 30;
+    int circleDiameter = 50;
     int circleRadius = circleDiameter / 2;
     private String player;
     private String opposite_player;
@@ -31,6 +31,8 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
     private Stone stone_pressed = null;
     //checking variables
     private boolean phase_0_wrong_player_check = false;
+
+    private boolean released_mouse_btn_phase_2 = true;
 
 
     public BoardFrame(String playerOne, String playerTwo) throws HeadlessException {
@@ -45,6 +47,7 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
         this.addMouseMotionListener(this);
         this.setSize(1080, 720);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setResizable(false);
         this.add(panel);
         this.setVisible(true);
     }
@@ -59,13 +62,13 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
         if (player == null) {
             player = playerOne_name;
             opposite_player = playerTwo_name;
-        } else if (player.equalsIgnoreCase(playerOne_name)) {
+        } else if (player.equals(playerOne_name)) {
             player_one_stones++;
             if (phase != 0) {
                 player = playerTwo_name;
                 opposite_player = playerOne_name;
             }
-        } else if (player.equalsIgnoreCase(playerTwo_name)) {
+        } else if (player.equals(playerTwo_name)) {
             player_two_stones++;
             if (phase != 0) {
                 player = playerOne_name;
@@ -76,7 +79,7 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
         }
         if (phase < 2 && player_two_stones + player_one_stones == maxStones) {
             phase = 2;
-            System.out.println("[BOARD] phase changed: phase " + phase);
+            System.out.println("[BOARD] phase changed: phase " + phase + " player moves: " + player);
         }
     }
 
@@ -84,10 +87,14 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
     public void mouseDragged(MouseEvent e) {
         if (phase == 2) {
             Stone stone = get_stone_position(e.getX(), e.getY());
-            if (stone != null) {
-                if (!stone.equal(stone_pressed) && logic.move_possible(stone_pressed, stone, player)) {
+            if (stone != null && stone_pressed != null) {
+                if (!stone.equal(stone_pressed) && Objects.equals(stone_pressed.getPlayer(), player) && logic.move_possible(stone_pressed, stone, player) && !released_mouse_btn_phase_2) {
+                    released_mouse_btn_phase_2 = true;
                     board[stone_pressed.getPosOne()][stone_pressed.getPosTwo()][stone_pressed.getPosThree()] = null;
                     board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = stone;
+                    panel.move_stone(stone_pressed, stone);
+                    logic.move_stone(stone_pressed, stone, player);
+                    //print_board();
                     setPlayer();
                 }
             }
@@ -125,18 +132,18 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
                     board[stone_pressed.getPosOne()][stone_pressed.getPosTwo()][stone_pressed.getPosThree()] = null;
                     phase = 1;
                     phase_0_wrong_player_check = false;
-                    System.out.println("[BOARD] Player: " + opposite_player + " removed a stone: [" + stone_pressed.getPosOne() + "] [" + stone_pressed.getPosTwo() + "] [" + stone_pressed.getPosThree() + "]");
+                    //System.out.println("[BOARD] Player: " + opposite_player + " removed a stone: [" + stone_pressed.getPosOne() + "] [" + stone_pressed.getPosTwo() + "] [" + stone_pressed.getPosThree() + "]");
                 } else {
                     phase_0_wrong_player_check = true;
                     System.out.println("[BOARD] Wrong Stone!");
                 }
-            } else {
+            } else if (phase == 1) {
                 if (board[stone_pressed.getPosOne()][stone_pressed.getPosTwo()][stone_pressed.getPosThree()] == null) {
                     logic.placeStone(stone_pressed);
                     board[stone_pressed.getPosOne()][stone_pressed.getPosTwo()][stone_pressed.getPosThree()] = stone_pressed;
                     panel.placeStone(stone_pressed);
-                    System.out.println(player_two_stones);
-                    System.out.println("[BOARD] Player: " + player + " placed a stone: [" + stone_pressed.getPosOne() + "] [" + stone_pressed.getPosTwo() + "] [" + stone_pressed.getPosThree() + "]");
+                    //System.out.println(player_two_stones);
+                    //System.out.println("[BOARD] Player: " + player + " placed a stone: [" + stone_pressed.getPosOne() + "] [" + stone_pressed.getPosTwo() + "] [" + stone_pressed.getPosThree() + "]");
                     if (player_two_stones >= 2) {
                         if (logic.muehle(player)) {
                             System.out.println("[BOARD] Player " + player + " removes a stone.");
@@ -155,7 +162,9 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if (phase == 2 && stone_pressed != null) {
+            released_mouse_btn_phase_2 = false;
+        }
     }
 
     @Override
@@ -170,73 +179,88 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
 
     private Stone get_stone_position(int position_x, int position_y) {
         Stone stone = null;
-        if (position_x > ((this.getWidth() / 2) - radius * 3) - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 3) - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 3) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) - circleRadius + 60) {   //point [1]
+        if (position_x > ((this.getWidth() / 2) - radius * 3) - circleRadius && position_x < ((this.getWidth() / 2) - radius * 3) - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 3) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) - circleRadius + 60) {   //point [1]
             stone = new Stone(this.player, 0, 0, 0);
-        } else if (position_x > ((this.getWidth() / 2) - radius * 3) + radius * 3 - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 3) + radius * 3 - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 3) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) - circleRadius + 60) {   //point [2]
+        } else if (position_x > ((this.getWidth() / 2) - radius * 3) + radius * 3 - circleRadius && position_x < ((this.getWidth() / 2) - radius * 3) + radius * 3 - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 3) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) - circleRadius + 60) {   //point [2]
             stone = new Stone(this.player, 0, 0, 1);
-        } else if (position_x > ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 3) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) - circleRadius + 60) {   //point [3]
+        } else if (position_x > ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius && position_x < ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 3) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) - circleRadius + 60) {   //point [3]
             stone = new Stone(this.player, 0, 0, 2);
         }
         // pos 10 & 15
-        else if (position_x > ((this.getWidth() / 2) - radius * 3) - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 3) - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 3) + radius * 3 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) + radius * 3 - circleRadius + 60) {   //point [10]
+        else if (position_x > ((this.getWidth() / 2) - radius * 3) - circleRadius && position_x < ((this.getWidth() / 2) - radius * 3) - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 3) + radius * 3 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) + radius * 3 - circleRadius + 60) {   //point [10]
             stone = new Stone(this.player, 0, 1, 0);
-        } else if (position_x > ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 3) + radius * 3 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) + radius * 3 - circleRadius + 60) {   //point [15]
+        } else if (position_x > ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius && position_x < ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 3) + radius * 3 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) + radius * 3 - circleRadius + 60) {   //point [15]
             stone = new Stone(this.player, 0, 1, 2);
         }
         //pos 22 23 24
-        else if (position_x > ((this.getWidth() / 2) - radius * 3) - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 3) - circleRadius + 10 && position_y > ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 60) {   //point [22]
+        else if (position_x > ((this.getWidth() / 2) - radius * 3) - circleRadius && position_x < ((this.getWidth() / 2) - radius * 3) - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 60) {   //point [22]
             stone = new Stone(this.player, 0, 2, 0);
-        } else if (position_x > ((this.getWidth() / 2) - radius * 3) + 1 + radius * 3 - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 3) + 1 + radius * 3 - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 60) {   //point [23]
+
+
+        } else if (position_x > ((this.getWidth() / 2) - radius * 3) + 1 + radius * 3 - circleRadius && position_x < ((this.getWidth() / 2) - radius * 3) + 1 + radius * 3 - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 60) {   //point [23]
             stone = new Stone(this.player, 0, 2, 1);
-        } else if (position_x > ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 60) {   //point [24]
+        } else if (position_x > ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius && position_x < ((this.getWidth() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) + 2 * radius * 3 - circleRadius + 60) {   //point [24]
             stone = new Stone(this.player, 0, 2, 2);
         }
         // middle rect
         //pos 4 5 6
-        else if (position_x > ((this.getWidth() / 2) - radius * 2) - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 2) - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 2) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) - circleRadius + 60) {   //point [4]
+        else if (position_x > ((this.getWidth() / 2) - radius * 2) - circleRadius && position_x < ((this.getWidth() / 2) - radius * 2) - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 2) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) - circleRadius + 60) {   //point [4]
             stone = new Stone(this.player, 1, 0, 0);
-        } else if (position_x > ((this.getWidth() / 2) - radius * 2) + radius * 2 - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 2) + radius * 2 - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 2) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) - circleRadius + 60) {   //point [5]
+        } else if (position_x > ((this.getWidth() / 2) - radius * 2) + radius * 2 - circleRadius && position_x < ((this.getWidth() / 2) - radius * 2) + radius * 2 - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 2) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) - circleRadius + 60) {   //point [5]
             stone = new Stone(this.player, 1, 0, 1);
-        } else if (position_x > ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 2) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) - circleRadius + 60) {   //point [6]
+        } else if (position_x > ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius && position_x < ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 2) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) - circleRadius + 60) {   //point [6]
             stone = new Stone(this.player, 1, 0, 2);
         }
         // pos 11 14
-        else if (position_x > ((this.getWidth() / 2) - radius * 2) - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 2) - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 2) + radius * 2 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) + radius * 2 - circleRadius + 60) {   //point [11]
+        else if (position_x > ((this.getWidth() / 2) - radius * 2) - circleRadius && position_x < ((this.getWidth() / 2) - radius * 2) - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 2) + radius * 2 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) + radius * 2 - circleRadius + 60) {   //point [11]
             stone = new Stone(this.player, 1, 1, 0);
-        } else if (position_x > ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 2) + radius * 2 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) + radius * 2 - circleRadius + 60) {   //point [14]
+        } else if (position_x > ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius && position_x < ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 2) + radius * 2 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) + radius * 2 - circleRadius + 60) {   //point [14]
             stone = new Stone(this.player, 1, 1, 2);
         }
         //pos 19 20 21
-        else if (position_x > ((this.getWidth() / 2) - radius * 2) - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 2) - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 60) {   //point [19]
+        else if (position_x > ((this.getWidth() / 2) - radius * 2) - circleRadius && position_x < ((this.getWidth() / 2) - radius * 2) - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 60) {   //point [19]
             stone = new Stone(this.player, 1, 2, 0);
-        } else if (position_x > ((this.getWidth() / 2) - radius * 2) + radius * 2 - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 2) + 1 + radius * 2 - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 60) {   //point [20]
+        } else if (position_x > ((this.getWidth() / 2) - radius * 2) + radius * 2 - circleRadius && position_x < ((this.getWidth() / 2) - radius * 2) + 1 + radius * 2 - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 60) {   //point [20]
             stone = new Stone(this.player, 1, 2, 1);
-        } else if (position_x > ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 60) {   //point [21]
+        } else if (position_x > ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius && position_x < ((this.getWidth() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 2) + 2 * radius * 2 - circleRadius + 60) {   //point [21]
             stone = new Stone(this.player, 1, 2, 2);
         }
         //small rect
         //pos 7 8 9
-        else if (position_x > ((this.getWidth() / 2) - radius) - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius) - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) - circleRadius + 60) {   //point [4]
+        else if (position_x > ((this.getWidth() / 2) - radius) - circleRadius && position_x < ((this.getWidth() / 2) - radius) - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) - circleRadius + 60) {   //point [4]
             stone = new Stone(this.player, 2, 0, 0);
-        } else if (position_x > ((this.getWidth() / 2) - radius) + radius - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius) + radius - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) - circleRadius + 60) {   //point [5]
+        } else if (position_x > ((this.getWidth() / 2) - radius) + radius - circleRadius && position_x < ((this.getWidth() / 2) - radius) + radius - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) - circleRadius + 60) {   //point [5]
             stone = new Stone(this.player, 2, 0, 1);
-        } else if (position_x > ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) - circleRadius + 60) {   //point [6]
+        } else if (position_x > ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius && position_x < ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) - circleRadius + 60) {   //point [6]
             stone = new Stone(this.player, 2, 0, 2);
         }
         // pos 12 13
-        else if (position_x > ((this.getWidth() / 2) - radius) - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius) - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius) + radius - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) + radius - circleRadius + 60) {   //point [12]
+        else if (position_x > ((this.getWidth() / 2) - radius) - circleRadius && position_x < ((this.getWidth() / 2) - radius) - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius) + radius - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) + radius - circleRadius + 60) {   //point [12]
             stone = new Stone(this.player, 2, 1, 0);
-        } else if (position_x > ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius) + radius - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) + radius - circleRadius + 60) {   //point [13]
+        } else if (position_x > ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius && position_x < ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius) + radius - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) + radius - circleRadius + 60) {   //point [13]
             stone = new Stone(this.player, 2, 1, 2);
         }
         //pos 16 17 18
-        else if (position_x > ((this.getWidth() / 2) - radius) - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius) - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 60) {   //point [16]
+        else if (position_x > ((this.getWidth() / 2) - radius) - circleRadius && position_x < ((this.getWidth() / 2) - radius) - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 60) {   //point [16]
             stone = new Stone(this.player, 2, 2, 0);
-        } else if (position_x > ((this.getWidth() / 2) - radius) + 1 + radius - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius) + 1 + radius - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 60) {   //point [17]
+        } else if (position_x > ((this.getWidth() / 2) - radius) + 1 + radius - circleRadius && position_x < ((this.getWidth() / 2) - radius) + 1 + radius - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 60) {   //point [17]
             stone = new Stone(this.player, 2, 2, 1);
-        } else if (position_x > ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius - 10 && position_x < ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius + 40 && position_y > ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 60) {   //point [18]
+        } else if (position_x > ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius && position_x < ((this.getWidth() / 2) - radius) + 2 * radius - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius) + 2 * radius - circleRadius + 60) {   //point [18]
             stone = new Stone(this.player, 2, 2, 2);
         }
         return stone;
+    }
+
+
+    private void print_board() {
+        System.out.println("Printboard: ");
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    System.out.println(board[i][j][k]);
+                }
+            }
+        }
+        System.out.println("end Print");
     }
 }

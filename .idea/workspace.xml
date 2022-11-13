@@ -7,7 +7,9 @@
     <list default="true" id="b15ea622-b002-49c9-8995-ebaa88260455" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GUI/BoardFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/BoardFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/BoardPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/BoardPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Logic/LogicDealer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Logic/LogicDealer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Logic/Stone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Logic/Stone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,6 +33,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2AdAXVV0pUT0Va8D2hnsPJXxfR5" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -47,7 +52,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/Semester2/OOP&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/Semester5/KI/KI&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
@@ -101,6 +106,11 @@
       <workItem from="1667943337559" duration="12000" />
       <workItem from="1668107698158" duration="7238000" />
       <workItem from="1668205968651" duration="5291000" />
+      <workItem from="1668279837091" duration="13000" />
+      <workItem from="1668286530002" duration="3767000" />
+      <workItem from="1668291397014" duration="6171000" />
+      <workItem from="1668371240498" duration="3320000" />
+      <workItem from="1668381207404" duration="1351000" />
     </task>
     <servers />
   </component>

@@ -1,13 +1,14 @@
 package Logic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class LogicDealer {
 
     private static final Stone[][][] board = new Stone[3][3][3];
-    private static final ArrayList<Stone> playerOneStones = new ArrayList<>();
-    private static final ArrayList<Stone> playerTwoStones = new ArrayList<>();
+    private static ArrayList<Stone> playerOneStones = new ArrayList<>();
+    private static ArrayList<Stone> playerTwoStones = new ArrayList<>();
     private static ArrayList<Stone[]> player_one_mill = new ArrayList<>();
     private static ArrayList<Stone[]> player_two_mill = new ArrayList<>();
     private String playerOne;
@@ -111,18 +112,18 @@ public class LogicDealer {
             if (s.getPosOne() == 0 && (s.getPosTwo() == 1 || s.getPosThree() == 1)) {
                 for (Stone st : temp_player_stones) {
                     if (s.getPosThree() == 1) {
-                        if (st.getPosOne() == 1 && (s.getPosTwo() == st.getPosTwo())) {
+                        if (st.getPosOne() == 1 && (s.getPosTwo() == st.getPosTwo()) && (s.getPosThree() == st.getPosThree())) {
                             for (Stone stone : temp_player_stones) {
-                                if (stone.getPosOne() == 2 && (s.getPosTwo() == stone.getPosTwo())) {
+                                if (stone.getPosOne() == 2 && (s.getPosTwo() == stone.getPosTwo()) && (s.getPosThree() == stone.getPosThree())) {
                                     temp_player_mill.add(new Stone[]{s, st, stone});
                                 }
                             }
                         }
                     } else {
                         if (s.getPosTwo() == 1) {
-                            if (st.getPosOne() == 1 && (s.getPosThree() == st.getPosThree())) {
+                            if (st.getPosOne() == 1 && (s.getPosThree() == st.getPosThree()) && (s.getPosTwo() == st.getPosTwo())) {
                                 for (Stone stone : temp_player_stones) {
-                                    if (stone.getPosOne() == 2 && (s.getPosThree() == stone.getPosThree())) {
+                                    if (stone.getPosOne() == 2 && (s.getPosThree() == stone.getPosThree()) && (s.getPosTwo() == stone.getPosTwo())) {
                                         temp_player_mill.add(new Stone[]{s, st, stone});
                                     }
                                 }
@@ -299,16 +300,8 @@ public class LogicDealer {
      * @return
      */
     public boolean move_possible(Stone start, Stone destination, String player) {
-        ArrayList<Stone> temp = null;
         boolean move_is_possible = false;
         if (board[destination.getPosOne()][destination.getPosTwo()][destination.getPosThree()] == null) {
-            if (player.equals(playerOne)) {
-                temp = playerOneStones;
-            } else if (player.equals(playerTwo)) {
-                temp = playerTwoStones;
-            } else {
-                System.err.println("[LOGIC] Wrong Player! i move_possible");
-            }
             if (start.getPosOne() == destination.getPosOne()) {
                 if ((((start.getPosTwo() + 1) == destination.getPosTwo()) || ((start.getPosTwo() - 1) == destination.getPosTwo())) && start.getPosThree() == destination.getPosThree()) {
                     move_is_possible = true;
@@ -328,18 +321,30 @@ public class LogicDealer {
                     move_is_possible = true;
                 }
             }
-            if (move_is_possible) {
-                assert temp != null;
-                for (Stone stone : temp) {
-                    if (stone.equal(start)) {
-                        temp.remove(stone);
-                        temp.add(destination);
-                    }
-                }
-            }
         }
 
         return move_is_possible;
+    }
+
+    public void move_stone(Stone start, Stone destination, String player) {
+        board[start.getPosOne()][start.getPosTwo()][start.getPosThree()] = null;
+        if (player.equals(playerOne)) {
+            for (Stone stone : playerOneStones) {
+                if (stone.equal(start)) {
+                    board[destination.getPosOne()][destination.getPosTwo()][destination.getPosThree()] = stone;
+                    stone.setPositions(destination.getPosOne(), destination.getPosTwo(), destination.getPosThree());
+                }
+            }
+        } else if (player.equals(playerTwo)) {
+            for (Stone stone : playerTwoStones) {
+                if (stone.equal(start)) {
+                    board[destination.getPosOne()][destination.getPosTwo()][destination.getPosThree()] = stone;
+                    stone.setPositions(destination.getPosOne(), destination.getPosTwo(), destination.getPosThree());
+                }
+            }
+        } else {
+            System.err.println("[LOGIC] Wrong Player! i move_possible");
+        }
     }
 
     /**
@@ -362,5 +367,17 @@ public class LogicDealer {
                 System.out.println(stone);
             }
         }
+    }
+
+    private void print_board() {
+        System.out.println("Printboard: ");
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    System.out.println(board[i][j][k]);
+                }
+            }
+        }
+        System.out.println("end Print");
     }
 }

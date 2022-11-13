@@ -5,9 +5,9 @@ import java.util.Objects;
 public class Stone {
 
     private final String player;
-    private final int posOne;
-    private final int posTwo;
-    private final int posThree;
+    private int posOne;
+    private int posTwo;
+    private int posThree;
 
     public Stone(String player, int posOne, int posTwo, int posThree) {
         this.player = player;
@@ -34,6 +34,13 @@ public class Stone {
 
     public boolean equal(Stone stone) {
         return stone.getPosOne() == this.getPosOne() && stone.getPosTwo() == this.getPosTwo() && stone.getPosThree() == this.getPosThree() && Objects.equals(stone.getPlayer(), this.getPlayer());
+    }
+
+    public void setPositions(int x, int y, int z) {
+        this.posOne = x;
+        this.posTwo = y;
+        this.posThree = z;
+
     }
 
     @Override

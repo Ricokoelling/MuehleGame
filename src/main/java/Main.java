@@ -8,7 +8,7 @@ public class Main {
 
 /*
 
-TODO:   -fix move
+TODO:   -phase 2 mills and remove.
         -jump one player
         -jump two player
         -win conditions
