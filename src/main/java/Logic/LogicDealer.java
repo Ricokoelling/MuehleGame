@@ -1,14 +1,13 @@
 package Logic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class LogicDealer {
 
     private static final Stone[][][] board = new Stone[3][3][3];
-    private static ArrayList<Stone> playerOneStones = new ArrayList<>();
-    private static ArrayList<Stone> playerTwoStones = new ArrayList<>();
+    private static final ArrayList<Stone> playerOneStones = new ArrayList<>();
+    private static final ArrayList<Stone> playerTwoStones = new ArrayList<>();
     private static ArrayList<Stone[]> player_one_mill = new ArrayList<>();
     private static ArrayList<Stone[]> player_two_mill = new ArrayList<>();
     private String playerOne;
@@ -136,11 +135,9 @@ public class LogicDealer {
 
         if (Objects.equals(player, playerOne)) {
             player_one_mill = temp_player_mill;
-            print_mills();
             return player_one_mill.size() > player_mill_size;
         } else if (Objects.equals(player, playerTwo)) {
             player_two_mill = temp_player_mill;
-            print_mills();
             return player_two_mill.size() > player_mill_size;
         }
         return false;
@@ -222,6 +219,21 @@ public class LogicDealer {
     }
 
     /**
+     * checks if one player got only 3 stones so he is allowed to jump
+     *
+     * @return
+     */
+    public String check_for_phase_3() {
+        if (playerOneStones.size() == 3) {
+            return playerOne;
+        } else if (playerTwoStones.size() == 3) {
+            return playerTwo;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Checks if one player only got mills
      *
      * @param player
@@ -288,6 +300,7 @@ public class LogicDealer {
         player_two_mill.clear();
         muehle(playerOne);
         muehle(playerTwo);
+        //print_mills();
     }
 
 
@@ -345,6 +358,36 @@ public class LogicDealer {
         } else {
             System.err.println("[LOGIC] Wrong Player! i move_possible");
         }
+    }
+
+    /**
+     * Jumps one stone to a new position
+     *
+     * @param start
+     * @param destination
+     * @param player
+     */
+    public void jump_stone(Stone start, Stone destination, String player) {
+        board[start.getPosOne()][start.getPosTwo()][start.getPosThree()] = null;
+        if (player.equals(playerOne)) {
+            for (Stone stone : playerOneStones) {
+                if (stone.equal(start)) {
+                    board[destination.getPosOne()][destination.getPosTwo()][destination.getPosThree()] = stone;
+                    stone.setPositions(destination.getPosOne(), destination.getPosTwo(), destination.getPosThree());
+                }
+            }
+        } else if (player.equals(playerTwo)) {
+            for (Stone stone : playerTwoStones) {
+                if (stone.equal(start)) {
+                    board[destination.getPosOne()][destination.getPosTwo()][destination.getPosThree()] = stone;
+                    stone.setPositions(destination.getPosOne(), destination.getPosTwo(), destination.getPosThree());
+                }
+            }
+        }
+    }
+
+    public boolean free_position(Stone stone) {
+        return board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] == null;
     }
 
     /**
