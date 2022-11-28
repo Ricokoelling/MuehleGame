@@ -8,9 +8,8 @@ public class Main {
 
 /*
 
-TODO:   -jump one player (work on playerchange after jump) (muehle etc.)
-        -jump two player
-        -win conditions
+TODO:   -Phase 4 and 3 extended Test
+        -win conditions (one player cant move)
         -Server
 
 Phases:     0. One Player removes a Stone
