@@ -1,4 +1,4 @@
-package Logic;
+package Data;
 
 import java.util.Objects;
 

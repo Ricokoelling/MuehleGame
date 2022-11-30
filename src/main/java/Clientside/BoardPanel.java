@@ -1,6 +1,6 @@
-package GUI;
+package Clientside;
 
-import Logic.Stone;
+import Data.Stone;
 
 import javax.swing.*;
 import java.awt.*;

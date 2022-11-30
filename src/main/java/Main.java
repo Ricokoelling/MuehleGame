@@ -1,4 +1,4 @@
-import GUI.BoardFrame;
+import Clientside.BoardFrame;
 
 public class Main {
     public static void main(String[] args) {
@@ -8,9 +8,10 @@ public class Main {
 
 /*
 
-TODO:   -Phase 4 and 3 extended Test
-        -win conditions (one player cant move)
-        -Server
+TODO:   - Player cant move win test
+        - Clientside
+        - Data senden usw.
+
 
 Phases:     0. One Player removes a Stone
             1. All PLayer Place their Stones

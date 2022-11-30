@@ -1,5 +1,7 @@
 package Logic;
 
+import Data.Stone;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -388,6 +390,248 @@ public class LogicDealer {
 
     public boolean free_position(Stone stone) {
         return board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] == null;
+    }
+
+    /**
+     * Checks if a player has any option to move in phase 2 specific or in phase 3 (only for the player who doesnt jump)
+     *
+     * @param player
+     * @return true -> if the player can still move | false -> if the player isnt able to move
+     */
+    public boolean aviable_moves_for_player(String player) {
+        ArrayList<Stone> temp = null;
+        if (Objects.equals(player, playerOne)) {
+            temp = playerOneStones;
+        } else if (Objects.equals(player, playerTwo)) {
+            temp = playerTwoStones;
+        } else {
+            System.err.println("[LOGIC] Wrong Player!");
+        }
+        assert temp != null;
+        for (Stone stone : temp) {
+            if (stone.getPosOne() == 0 && stone.getPosTwo() == 0 && stone.getPosThree() == 0) {
+                if (board[0][0][1] == null) {
+                    return true;
+                }
+                if (board[0][1][0] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 0 && stone.getPosTwo() == 0 && stone.getPosThree() == 1) {
+                if (board[0][0][0] == null) {
+                    return true;
+                }
+                if (board[0][0][2] == null) {
+                    return true;
+                }
+                if (board[1][0][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 0 && stone.getPosTwo() == 0 && stone.getPosThree() == 2) {
+                if (board[0][0][1] == null) {
+                    return true;
+                }
+                if (board[0][1][2] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 1 && stone.getPosTwo() == 0 && stone.getPosThree() == 0) {
+                if (board[1][0][1] == null) {
+                    return true;
+                }
+                if (board[1][1][0] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 1 && stone.getPosTwo() == 0 && stone.getPosThree() == 1) {
+                if (board[1][0][0] == null) {
+                    return true;
+                }
+                if (board[1][0][2] == null) {
+                    return true;
+                }
+                if (board[0][0][1] == null) {
+                    return true;
+                }
+                if (board[2][0][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 1 && stone.getPosTwo() == 0 && stone.getPosThree() == 2) {
+                if (board[1][0][1] == null) {
+                    return true;
+                }
+                if (board[1][1][2] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 2 && stone.getPosTwo() == 0 && stone.getPosThree() == 0) {
+                if (board[2][0][1] == null) {
+                    return true;
+                }
+                if (board[2][1][0] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 2 && stone.getPosTwo() == 0 && stone.getPosThree() == 1) {
+                if (board[2][0][0] == null) {
+                    return true;
+                }
+                if (board[2][0][2] == null) {
+                    return true;
+                }
+                if (board[1][0][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 2 && stone.getPosTwo() == 0 && stone.getPosThree() == 2) {
+                if (board[0][0][0] == null) {
+                    return true;
+                }
+                if (board[0][0][2] == null) {
+                    return true;
+                }
+                if (board[0][0][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 0 && stone.getPosTwo() == 1 && stone.getPosThree() == 0) {
+                if (board[0][0][0] == null) {
+                    return true;
+                }
+                if (board[1][1][0] == null) {
+                    return true;
+                }
+                if (board[0][2][0] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 1 && stone.getPosTwo() == 1 && stone.getPosThree() == 0) {
+                if (board[0][1][0] == null) {
+                    return true;
+                }
+                if (board[1][0][0] == null) {
+                    return true;
+                }
+                if (board[1][2][0] == null) {
+                    return true;
+                }
+                if (board[2][1][0] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 2 && stone.getPosTwo() == 1 && stone.getPosThree() == 0) {
+                if (board[2][0][0] == null) {
+                    return true;
+                }
+                if (board[2][2][0] == null) {
+                    return true;
+                }
+                if (board[1][1][0] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 2 && stone.getPosTwo() == 1 && stone.getPosThree() == 2) {
+                if (board[2][0][2] == null) {
+                    return true;
+                }
+                if (board[2][2][2] == null) {
+                    return true;
+                }
+                if (board[1][1][2] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 1 && stone.getPosTwo() == 1 && stone.getPosThree() == 2) {
+                if (board[1][0][2] == null) {
+                    return true;
+                }
+                if (board[0][1][2] == null) {
+                    return true;
+                }
+                if (board[1][2][2] == null) {
+                    return true;
+                }
+                if (board[2][1][2] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 0 && stone.getPosTwo() == 1 && stone.getPosThree() == 2) {
+                if (board[0][0][2] == null) {
+                    return true;
+                }
+                if (board[0][2][2] == null) {
+                    return true;
+                }
+                if (board[1][1][2] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 2 && stone.getPosTwo() == 2 && stone.getPosThree() == 0) {
+                if (board[2][1][0] == null) {
+                    return true;
+                }
+                if (board[2][2][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 2 && stone.getPosTwo() == 2 && stone.getPosThree() == 1) {
+                if (board[2][2][0] == null) {
+                    return true;
+                }
+                if (board[2][2][2] == null) {
+                    return true;
+                }
+                if (board[1][2][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 2 && stone.getPosTwo() == 2 && stone.getPosThree() == 2) {
+                if (board[2][1][2] == null) {
+                    return true;
+                }
+                if (board[2][2][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 1 && stone.getPosTwo() == 2 && stone.getPosThree() == 0) {
+                if (board[1][1][0] == null) {
+                    return true;
+                }
+                if (board[1][2][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 1 && stone.getPosTwo() == 2 && stone.getPosThree() == 1) {
+                if (board[1][2][0] == null) {
+                    return true;
+                }
+                if (board[1][2][2] == null) {
+                    return true;
+                }
+                if (board[2][2][1] == null) {
+                    return true;
+                }
+                if (board[0][2][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 1 && stone.getPosTwo() == 2 && stone.getPosThree() == 2) {
+                if (board[1][1][2] == null) {
+                    return true;
+                }
+                if (board[1][2][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 0 && stone.getPosTwo() == 2 && stone.getPosThree() == 0) {
+                if (board[0][1][0] == null) {
+                    return true;
+                }
+                if (board[0][2][1] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 0 && stone.getPosTwo() == 2 && stone.getPosThree() == 1) {
+                if (board[0][2][0] == null) {
+                    return true;
+                }
+                if (board[1][2][1] == null) {
+                    return true;
+                }
+                if (board[0][2][2] == null) {
+                    return true;
+                }
+            } else if (stone.getPosOne() == 0 && stone.getPosTwo() == 2 && stone.getPosThree() == 2) {
+                if (board[0][1][2] == null) {
+                    return true;
+                }
+                if (board[0][2][1] == null) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
