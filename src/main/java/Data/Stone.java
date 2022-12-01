@@ -1,8 +1,9 @@
 package Data;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Stone {
+public class Stone implements Serializable {
 
     private final String player;
     private int posOne;

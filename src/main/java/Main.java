@@ -1,16 +1,17 @@
-import Clientside.BoardFrame;
+import Clientside.ClientBoard;
+import OfflineGame.BoardFrame;
 
 public class Main {
     public static void main(String[] args) {
-        BoardFrame game = new BoardFrame("Rico", "Max");
+        ClientBoard clientBoard = new ClientBoard("Rico");
     }
 }
 
 /*
 
-TODO:   - Player cant move win test
-        - Clientside
-        - Data senden usw.
+TODO:   - Swingworker implement
+        - test all sends etc.
+        - test win cant move (...)
 
 
 Phases:     0. One Player removes a Stone

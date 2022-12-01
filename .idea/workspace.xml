@@ -5,15 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b15ea622-b002-49c9-8995-ebaa88260455" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Data/PlayData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Serverside/Clienthandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Serverside/Server.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Clientside/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Clientside/ClientBoard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Clientside/SendSwingWorker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Clientside/ServerConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Clientside/WaitSwingWorker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Main_two.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/OfflineGame/BoardPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/BoardFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/BoardFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/BoardPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/BoardPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/BoardFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/OfflineGame/BoardFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Data/PlayData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/PlayData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Data/Stone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/Stone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Logic/LogicDealer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Logic/LogicDealer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Logic/Stone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/Stone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Serverside/Clienthandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Serverside/Clienthandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +78,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Main_two">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Muehle" />
@@ -81,9 +86,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Main_two" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main_two" />
+      <module name="Muehle" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Serverside.Server" />
+      <module name="Muehle" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Serverside.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main_two" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Server" />
       </list>
     </recent_temporary>
   </component>
@@ -121,6 +148,7 @@
       <workItem from="1669643028376" duration="1897000" />
       <workItem from="1669726426832" duration="2017000" />
       <workItem from="1669818527914" duration="5394000" />
+      <workItem from="1669906578421" duration="7693000" />
     </task>
     <servers />
   </component>

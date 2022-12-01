@@ -59,6 +59,8 @@ public class PlayData implements Serializable {
 
 /*
     state:
+        -1 - init (Client -> Server)
+
         0  - Player move was accepted by the server and send to the other player (Server -> client)
         1  - Player move was declined : reason (Server -> Client)
              Reasons:
@@ -70,13 +72,11 @@ public class PlayData implements Serializable {
                 6 - Unknown Cause
 
 
-        20 - Player has to remove a stone (Server -> Client)
-        21 - Player removes a stone (Client -> Server)
+        10 - player wants to place a stone (Client -> Server) <-> move was accepted (Server -> Client)
+        11 - placement was declined (Server -> Client)
+        12 - other Client places this stone on his board (Sever -> Client)
 
 
-        10 - Player places a stone (Client -> Server)
-        11 - Player moves a stone (Client -> Server)
-        12 - Player jumps (Client -> Server)
 
-        30 - One Player won (Server -> Client)
+
  */

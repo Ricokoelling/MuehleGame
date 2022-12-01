@@ -1,4 +1,4 @@
-package Clientside;
+package OfflineGame;
 
 import Logic.LogicDealer;
 import Data.Stone;

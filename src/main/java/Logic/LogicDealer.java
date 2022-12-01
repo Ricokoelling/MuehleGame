@@ -2,6 +2,7 @@ package Logic;
 
 import Data.Stone;
 
+import javax.management.ObjectName;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -20,7 +21,6 @@ public class LogicDealer {
 
     public LogicDealer(String playerOne, String playerTwo) {
         this.playerOne = playerOne;
-        this.playerTwo = playerTwo;
     }
 
     /**
@@ -632,6 +632,24 @@ public class LogicDealer {
         }
 
         return false;
+    }
+
+    public int get_player_stones(String player) {
+        if (Objects.equals(player, playerOne)) {
+            return playerOneStones.size();
+        } else if (Objects.equals(player, playerTwo)) {
+            return playerTwoStones.size();
+        } else {
+            return -1;
+        }
+    }
+
+    public void setPlayerOne(String playerOne) {
+        this.playerOne = playerOne;
+    }
+
+    public void setPlayerTwo(String playerTwo) {
+        this.playerTwo = playerTwo;
     }
 
     /**
