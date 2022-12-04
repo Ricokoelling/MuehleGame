@@ -30,12 +30,12 @@ public class LogicDealer {
      */
     public void placeStone(Stone stone) {
         board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = stone;
-        if (stone.getPlayer().equalsIgnoreCase(this.playerOne)) {
+        if (stone.getPlayer().equals(this.playerOne)) {
             playerOneStones.add(stone);
-        } else if (stone.getPlayer().equalsIgnoreCase(this.playerTwo)) {
+        } else if (stone.getPlayer().equals(this.playerTwo)) {
             playerTwoStones.add(stone);
         } else {
-            System.err.println("[Logic] false Player name" + stone.getPlayer());
+            System.err.println("[Logic] false Player name" + stone.getPlayer() + playerOne);
         }
     }
 
@@ -137,9 +137,11 @@ public class LogicDealer {
 
         if (Objects.equals(player, playerOne)) {
             player_one_mill = temp_player_mill;
+            print_mills();
             return player_one_mill.size() > player_mill_size;
         } else if (Objects.equals(player, playerTwo)) {
             player_two_mill = temp_player_mill;
+            print_mills();
             return player_two_mill.size() > player_mill_size;
         }
         return false;
@@ -684,5 +686,17 @@ public class LogicDealer {
             }
         }
         System.out.println("end Print");
+    }
+
+    public void print_player_stones() {
+        System.out.println(playerOne + " seine Stones:");
+        for (Stone stone : playerOneStones) {
+            System.out.println(stone);
+        }
+        System.out.println();
+        System.out.println(playerTwo + " seine Stones:");
+        for (Stone stone : playerTwoStones) {
+            System.out.println(stone);
+        }
     }
 }

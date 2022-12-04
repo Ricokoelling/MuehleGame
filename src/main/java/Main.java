@@ -9,7 +9,9 @@ public class Main {
 
 /*
 
-TODO:   - Swingworker implement
+TODO:   - implement what happens mill (remove etc)
+        - phase change (send)
+        - phase 2
         - test all sends etc.
         - test win cant move (...)
 

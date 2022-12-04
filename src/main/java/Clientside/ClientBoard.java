@@ -20,7 +20,9 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     int radius = panel.getWidth() / 14;
     int circleDiameter = 50;
     int circleRadius = circleDiameter / 2;
+    private String opponent_name;
     private int phase = -1;
+    private boolean this_player_move = false;
 
 
     public ClientBoard(String player) throws HeadlessException {
@@ -28,6 +30,7 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
 
         this.client = new Client(player);
         panel.setPlayer_one_name(player_name);
+        this.setTitle(this.player_name);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.setSize(1080, 720);
@@ -35,6 +38,12 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
         this.setResizable(false);
         this.add(panel);
         this.setVisible(true);
+        init();
+    }
+
+    private void init() {
+        current_state(-1);
+        new WaitSwingWorker(this.client, this.player_name, this.panel, this).execute();
     }
 
 
@@ -55,9 +64,13 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Stone stone = get_stone_position(e.getX(), e.getY());
-        if (stone != null) {
-            client.sendData(stone, "mouse_pressed");
+        if (phase == 1 && this_player_move) {
+            Stone stone = get_stone_position(e.getX(), e.getY());
+            if (stone != null) {
+                client.sendData(stone, "mouse_pressed");
+                new SendSwingWorker(this.client, this.player_name, this.panel, this).execute();
+                this_player_move = false;
+            }
         }
     }
 
@@ -156,6 +169,42 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
         }
         assert stone != null;
         return stone;
+    }
+
+    public void setOpponent(String player) {
+        opponent_name = player;
+        panel.setPlayer_two_name(player);
+    }
+
+    public void setThis_player_move(boolean this_player_move) {
+        this.this_player_move = this_player_move;
+    }
+
+    public void setPlayer_Position(boolean position) {
+        if (!position) {
+            new WaitSwingWorker(this.client, this.player_name, this.panel, this).execute();
+            current_state(11);
+        } else {
+            current_state(10);
+            this_player_move = true;
+        }
+    }
+
+    protected void current_state(int state) {
+        switch (state) {
+            case -1:
+                panel.setCurrent_state("Wait for Server answer!");
+                break;
+            case 10:
+                panel.setCurrent_state(player_name + " you can move!");
+                break;
+            case 11:
+                panel.setCurrent_state(opponent_name + " is on his move!");
+                break;
+            default:
+                panel.setCurrent_state("Something went wrong!");
+                break;
+        }
     }
 
     private void print_board() {

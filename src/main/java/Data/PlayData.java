@@ -9,6 +9,7 @@ public class PlayData implements Serializable {
     private String player = null;
     private int reason = -1;
     private Stone destination = null;
+    private boolean init;
 
     /**
      * Constructor only for the client
@@ -38,6 +39,12 @@ public class PlayData implements Serializable {
         this.reason = reason;
     }
 
+    public PlayData(int state, String opponent, boolean init) {
+        this.state = state;
+        this.init = init;
+        this.player = opponent;  // opponent name gets send to client.
+    }
+
     public int getState() {
         return state;
     }
@@ -52,6 +59,10 @@ public class PlayData implements Serializable {
 
     public int getReason() {
         return reason;
+    }
+
+    public boolean isInit() {
+        return init;
     }
 }
 

@@ -67,7 +67,6 @@ public class Client {
     public int wait_for_allowed() {
         if (serverConn.isAllowed_move() == 1) {
             serverdata = serverConn.getServerdata();
-
             return 1;
         } else if (serverConn.isAllowed_move() == 0) {
             serverdata = serverConn.getServerdata();

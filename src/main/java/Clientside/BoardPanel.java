@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public class BoardPanel extends JPanel {
 
+    protected static Label current_state;
     private final Color playerone_stone_color = Color.BLACK;
     private final Color playertwo_stone_color = Color.CYAN;
     private final Stone[][][] board = new Stone[3][3][3];
@@ -17,6 +18,13 @@ public class BoardPanel extends JPanel {
     public BoardPanel() {
         this.setSize(1080, 720);
         this.setVisible(true);
+        new GridBagLayout();
+        GridBagConstraints g = new GridBagConstraints();
+        current_state = new Label("Wait for other Player \t");
+        current_state.setFont(new Font("Arial", Font.PLAIN, 40));
+        current_state.setBackground(getWoodenColor());
+        add(current_state, g);
+
     }
 
     private static int setPos(Stone stone) {
@@ -73,6 +81,11 @@ public class BoardPanel extends JPanel {
             return 24;
         }
         return -1;
+    }
+
+    public void setCurrent_state(String text) {
+        current_state.setText(text);
+        update(this.getGraphics());
     }
 
     public void setPlayer_one_name(String player_one_name) {

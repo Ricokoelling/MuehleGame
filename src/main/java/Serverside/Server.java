@@ -1,5 +1,7 @@
 package Serverside;
 
+import Logic.LogicDealer;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,6 +14,7 @@ public class Server {
 
     private static final ArrayList<Clienthandler> clients = new ArrayList<>();
     private static final ExecutorService pool = Executors.newFixedThreadPool(10);
+    private static final LogicDealer logic = new LogicDealer();
     static ServerSocket servs;
 
     public Server() {
@@ -39,10 +42,10 @@ public class Server {
      */
     public static void start() throws IOException {
         while (true) {
-            System.out.println("[SERVER] Waiting for client connection....");
+            //System.out.println("[SERVER] Waiting for client connection....");
             Socket client = servs.accept();
-            System.out.println("[SERVER] Connected to " + client.getLocalPort());
-            Clienthandler clienthandler = new Clienthandler(client, clients);
+            //System.out.println("[SERVER] Connected to " + client.getLocalPort());
+            Clienthandler clienthandler = new Clienthandler(client, clients, logic);
             clients.add(clienthandler);
 
 

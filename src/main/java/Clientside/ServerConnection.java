@@ -2,11 +2,9 @@ package Clientside;
 
 import Data.PlayData;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class ServerConnection implements Runnable {
 
@@ -33,7 +31,7 @@ public class ServerConnection implements Runnable {
                     case 11:
                         allowed_move = 0;
                         break;
-                    case 12:
+                    case 12, -1:
                         achived_data = true;
                         break;
 
@@ -45,11 +43,9 @@ public class ServerConnection implements Runnable {
     }
 
     public int isAllowed_move() {
-        return allowed_move;
-    }
-
-    public void setAllowed_move(int allowed_move) {
-        this.allowed_move = allowed_move;
+        int temp = allowed_move;
+        allowed_move = -1;
+        return temp;
     }
 
     public PlayData getServerdata() {
@@ -57,6 +53,11 @@ public class ServerConnection implements Runnable {
     }
 
     public boolean isAchived_data() {
-        return achived_data;
+        if (achived_data) {
+            achived_data = false;
+            return true;
+        } else {
+            return false;
+        }
     }
 }

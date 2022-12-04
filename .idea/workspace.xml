@@ -5,20 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b15ea622-b002-49c9-8995-ebaa88260455" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Clientside/Client.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Clientside/ClientBoard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Clientside/SendSwingWorker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Clientside/ServerConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Clientside/WaitSwingWorker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Main_two.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/OfflineGame/BoardPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/BoardFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/OfflineGame/BoardFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/BoardPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/BoardPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/ClientBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/ClientBoard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/SendSwingWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/SendSwingWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/ServerConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/ServerConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/WaitSwingWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/WaitSwingWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Data/PlayData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/PlayData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Data/Stone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/Stone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Logic/LogicDealer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Logic/LogicDealer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Serverside/Clienthandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Serverside/Clienthandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Serverside/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Serverside/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,6 +147,9 @@
       <workItem from="1669726426832" duration="2017000" />
       <workItem from="1669818527914" duration="5394000" />
       <workItem from="1669906578421" duration="7693000" />
+      <workItem from="1669927247736" duration="8000" />
+      <workItem from="1670167179386" duration="1132000" />
+      <workItem from="1670168372790" duration="8925000" />
     </task>
     <servers />
   </component>

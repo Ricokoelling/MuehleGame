@@ -36,9 +36,20 @@ public class WaitSwingWorker extends SwingWorker<Boolean, String> {
 
     @Override
     protected void done() {
-        if (serverdata.getState() == 12) {
-            clientBoard.insert_board(serverdata.getStone());
-            panel.placeStone(serverdata.getStone());
+        System.out.println("Got op Data...");
+        switch (serverdata.getState()) {
+            case -1:
+                clientBoard.setOpponent(serverdata.getPlayer());
+                clientBoard.setPlayer_Position(serverdata.isInit());
+                clientBoard.setPhase(1);
+                break;
+            case 12:
+                clientBoard.insert_board(serverdata.getStone());
+                panel.placeStone(serverdata.getStone());
+                clientBoard.setThis_player_move(true);
+                clientBoard.current_state(10);
+                break;
         }
+
     }
 }
