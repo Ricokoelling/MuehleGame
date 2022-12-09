@@ -9,7 +9,6 @@ import java.util.Objects;
 
 public class Client {
 
-    private static Socket client;
     private final String player;
     ServerConnection serverConn;
     private ObjectOutputStream objWriter;
@@ -19,7 +18,7 @@ public class Client {
 
     public Client(String player) {
         try {
-            client = new Socket("localhost", 1337);
+            Socket client = new Socket("localhost", 1337);
             serverConn = new ServerConnection(client);
             objWriter = new ObjectOutputStream(client.getOutputStream());
             System.out.println("[ClientSide.Client] connected");
@@ -48,6 +47,23 @@ public class Client {
         PlayData data = null;
         if (Objects.equals("mouse_pressed", type)) {
             data = new PlayData(10, stone, player);
+        } else if (Objects.equals("remove_mouse_pressed", type)) {
+            data = new PlayData(0, stone, player);
+        }
+
+        assert data != null;
+        sendata = data;
+        try {
+            objWriter.writeObject(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void sendData(Stone start, Stone destination, String type) {
+        PlayData data = null;
+        if (Objects.equals("mouse_dragged", type)) {
+            data = new PlayData(20, start, destination, player);
         }
 
         assert data != null;
@@ -65,10 +81,11 @@ public class Client {
     //Wait Stuff
     //
     public int wait_for_allowed() {
-        if (serverConn.isAllowed_move() == 1) {
+        int temp = serverConn.isAllowed_move();
+        if (temp == 1) {
             serverdata = serverConn.getServerdata();
             return 1;
-        } else if (serverConn.isAllowed_move() == 0) {
+        } else if (temp == 0) {
             serverdata = serverConn.getServerdata();
             return 0;
         }
@@ -92,5 +109,10 @@ public class Client {
 
     public PlayData getSendata() {
         return sendata;
+    }
+
+    //Setter
+
+    public void setOpponent(String opponent) {
     }
 }

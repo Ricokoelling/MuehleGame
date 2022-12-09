@@ -16,7 +16,7 @@ public class BoardFrame extends JFrame implements MouseMotionListener, MouseList
 
     private final String playerOne_name;
     private final String playerTwo_name;
-    private final BoardPanel panel = new BoardPanel();
+    private final OfflineBoardPanel panel = new OfflineBoardPanel();
     private final LogicDealer logic;
     private final int MAX_STONES = 18;
     int radius = panel.getWidth() / 14;

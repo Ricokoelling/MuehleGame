@@ -8,14 +8,12 @@ import java.net.Socket;
 
 public class ServerConnection implements Runnable {
 
-    private final Socket server;
     private final ObjectInputStream objReader;
     private int allowed_move = -1;
     private boolean achived_data = false;
     private PlayData serverdata;
 
     public ServerConnection(Socket server) throws IOException {
-        this.server = server;
         objReader = new ObjectInputStream(server.getInputStream());
     }
 
@@ -25,13 +23,13 @@ public class ServerConnection implements Runnable {
             while (true) {
                 serverdata = (PlayData) objReader.readObject();
                 switch (serverdata.getState()) {
-                    case 10:
+                    case 10, 90, 0, 29, 20, 23:
                         allowed_move = 1;
                         break;
-                    case 11:
+                    case 11, 1:
                         allowed_move = 0;
                         break;
-                    case 12, -1:
+                    case 12, -1, 91, 22, 24:
                         achived_data = true;
                         break;
 

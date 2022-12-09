@@ -11,7 +11,6 @@ public class SendSwingWorker extends SwingWorker<Boolean, String> {
     private final BoardPanel panel;
     private final ClientBoard clientBoard;
     private PlayData serverdata;
-    private int temp = -1;
 
 
     public SendSwingWorker(Client client, String player, BoardPanel panel, ClientBoard clientBoard) {
@@ -26,12 +25,12 @@ public class SendSwingWorker extends SwingWorker<Boolean, String> {
         System.out.println("[WORKER] Wait for allowed....");
         while (true) {
             Thread.sleep(20);
-            temp = client.wait_for_allowed();
-            if (temp == 0 || temp == 1) {
+            int temp = client.wait_for_allowed();
+            System.out.println(temp);
+            if (temp != -1) {
                 serverdata = client.getServerdata();
-                System.out.println("jude");
-                if (client.wait_for_allowed() == 1) {
-                    System.out.println("[WORKER] Data was allowed.. ");
+                if (temp == 1) {
+                    System.out.println("[WORKER] Data was allowed.. " + serverdata.getState());
                 } else {
                     System.out.println("[WORKER] Data wasn't allowed");
                 }
@@ -44,19 +43,66 @@ public class SendSwingWorker extends SwingWorker<Boolean, String> {
 
     @Override
     protected void done() {
-        if (temp == 1) {
-            switch (serverdata.getState()) {
-                case 10:
-                    panel.placeStone(client.getSendata().getStone());
-                    clientBoard.insert_board(client.getSendata().getStone());
-                    clientBoard.setPhase(1);
-                    clientBoard.current_state(11);
-                    break;
-                default:
-                    System.out.println("[SEND] Smth went wrong!!");
-                    break;
-            }
-            new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
+        switch (serverdata.getState()) {
+            case 10:
+                panel.placeStone(client.getSendata().getStone());
+                clientBoard.insert_board(client.getSendata().getStone());
+                clientBoard.setPhase(1);
+                clientBoard.current_state(11);
+                new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
+                break;
+            case 11:
+                if (serverdata.getReason() == 1) {
+                    clientBoard.current_state(12);
+                    clientBoard.setThis_player_move(true);
+                } else {
+                    System.err.println("[SEND] Wrong Reason");
+                }
+                break;
+            case 90:
+                panel.placeStone(client.getSendata().getStone());
+                clientBoard.insert_board(client.getSendata().getStone());
+                clientBoard.setPhase(0);
+                clientBoard.current_state(90);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                clientBoard.setThis_player_move(true);
+                clientBoard.current_state(0);
+                break;
+            case 0:
+                panel.remove(serverdata.getStone());
+                clientBoard.remove_board(serverdata.getStone());
+                clientBoard.setPhase(1);
+                clientBoard.current_state(11);
+                new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
+                break;
+            case 1:
+                if (serverdata.getState() == 2) {
+                    clientBoard.current_state(1);
+                    clientBoard.setThis_player_move(true);
+                } else {
+                    System.err.println("[SEND] Wrong Reason");
+                }
+                break;
+            case 29:
+                panel.placeStone(client.getSendata().getStone());
+                clientBoard.insert_board(client.getSendata().getStone());
+                clientBoard.setPhase(2);
+                clientBoard.current_state(29);
+                new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
+                break;
+            case 20:
+                panel.move_stone(client.getSendata().getStone(), client.getSendata().getDestination());
+                clientBoard.move_board(client.getSendata().getStone(), client.getServerdata().getDestination());
+                clientBoard.current_state(20);
+                new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
+                break;
+            default:
+                System.out.println("[SEND] Smth went wrong!!");
+                break;
         }
     }
 }

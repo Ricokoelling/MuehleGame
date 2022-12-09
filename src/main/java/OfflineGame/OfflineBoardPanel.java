@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public class BoardPanel extends JPanel {
+public class OfflineBoardPanel extends JPanel {
 
     private final Color playerone_stone_color = Color.BLACK;
     private final Color playertwo_stone_color = Color.CYAN;
@@ -14,7 +14,7 @@ public class BoardPanel extends JPanel {
     private String player_one_name;
     private String player_two_name;
 
-    public BoardPanel() {
+    public OfflineBoardPanel() {
         this.setSize(1080, 720);
         this.setVisible(true);
     }

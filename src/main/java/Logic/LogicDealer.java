@@ -2,7 +2,6 @@ package Logic;
 
 import Data.Stone;
 
-import javax.management.ObjectName;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -15,6 +14,7 @@ public class LogicDealer {
     private static ArrayList<Stone[]> player_two_mill = new ArrayList<>();
     private String playerOne;
     private String playerTwo;
+    private int maxstones = 18;
 
     public LogicDealer() {
     }
@@ -137,11 +137,9 @@ public class LogicDealer {
 
         if (Objects.equals(player, playerOne)) {
             player_one_mill = temp_player_mill;
-            print_mills();
             return player_one_mill.size() > player_mill_size;
         } else if (Objects.equals(player, playerTwo)) {
             player_two_mill = temp_player_mill;
-            print_mills();
             return player_two_mill.size() > player_mill_size;
         }
         return false;
@@ -271,6 +269,7 @@ public class LogicDealer {
      * @return
      */
     public boolean remove(Stone stone, String player) {
+        System.out.println(stone + " \n player: " + player);
         if (stone_player(stone, player)) {
             if ((!check(stone, player) && onlymills(player)) || check(stone, player)) {
                 board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = null;
@@ -279,6 +278,8 @@ public class LogicDealer {
                         if (pl_one.equal(stone)) {
                             playerOneStones.remove(pl_one);
                             check_for_mills();
+                            maxstones--;
+                            System.out.println("removed");
                             return true;
                         }
                     }
@@ -287,6 +288,8 @@ public class LogicDealer {
                         if (pl_two.equal(stone)) {
                             playerTwoStones.remove(pl_two);
                             check_for_mills();
+                            maxstones--;
+                            System.out.println("removed");
                             return true;
                         }
                     }
@@ -636,6 +639,23 @@ public class LogicDealer {
         return false;
     }
 
+    public boolean player_stone(Stone stone, String player) {
+        if (Objects.equals(player, playerOne)) {
+            for (Stone plOne_stone : playerOneStones) {
+                if (plOne_stone.equals(stone)) {
+                    return true;
+                }
+            }
+        } else if (Objects.equals(player, playerTwo)) {
+            for (Stone plTwo_stones : playerTwoStones) {
+                if (plTwo_stones.equals(stone)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public int get_player_stones(String player) {
         if (Objects.equals(player, playerOne)) {
             return playerOneStones.size();
@@ -644,6 +664,10 @@ public class LogicDealer {
         } else {
             return -1;
         }
+    }
+
+    public int getMaxstones() {
+        return maxstones;
     }
 
     public void setPlayerOne(String playerOne) {

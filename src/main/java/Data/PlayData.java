@@ -24,6 +24,13 @@ public class PlayData implements Serializable {
         this.player = player;
     }
 
+    public PlayData(int state, Stone start, Stone destination, String player) {
+        this.state = state;
+        this.stone = start;
+        this.destination = destination;
+        this.player = player;
+    }
+
     /**
      * Constructor only for the client
      *
@@ -45,6 +52,7 @@ public class PlayData implements Serializable {
         this.player = opponent;  // opponent name gets send to client.
     }
 
+    // Setter
     public int getState() {
         return state;
     }
@@ -53,12 +61,22 @@ public class PlayData implements Serializable {
         return stone;
     }
 
+    public void setStone(Stone stone) {
+        this.stone = stone;
+    }
+
+
+    // Getter
     public String getPlayer() {
         return player;
     }
 
     public int getReason() {
         return reason;
+    }
+
+    public Stone getDestination() {
+        return destination;
     }
 
     public boolean isInit() {
@@ -72,22 +90,31 @@ public class PlayData implements Serializable {
     state:
         -1 - init (Client -> Server)
 
-        0  - Player move was accepted by the server and send to the other player (Server -> client)
-        1  - Player move was declined : reason (Server -> Client)
-             Reasons:
+           Reasons:
                 1 - Position was taken
-                2 - Not a possible move
-                3 - Not your Stone
-                4 - Wrong Stone (Remove)
-                5 - Wrong Player
-                6 - Unknown Cause
+                2 - not your stone
 
 
         10 - player wants to place a stone (Client -> Server) <-> move was accepted (Server -> Client)
-        11 - placement was declined (Server -> Client)
+        11 - placement was declined (Server -> Client) (siehe Reasons)
         12 - other Client places this stone on his board (Sever -> Client)
 
 
+        90 - player who just placed his stone got a mill (Server -> Client) ----> needs another server message
+        91 - other player got a mill, so you have to wait (Server -> Client) ----> waits for another message
+
+        Phase change to 0:
+        00 - player wants to remove a stone (Client -> Server) <-> move was accepted (Server -> Client)
+        01 - remove was declined (Server - Client)
+        02 - other player removes a stone (Server -> Client)
+
+        Phase change to 2:
+        29 - phase change to 2 and booth player can move (Server -> Client)
+        20 - player wants to move to a certain position (Client -> Server)  <-> move was accepted (Server -> Client)
+        21 - move was declined (Server -> Client)
+        22 - other player moves a stone (Server -> Client)
+        23 - from remove to player (Server -> Client)
+        24 - from remove to opponent (Server -> Client)
 
 
  */

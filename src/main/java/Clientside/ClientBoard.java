@@ -1,14 +1,12 @@
 package Clientside;
 
 import Data.Stone;
-import Logic.LogicDealer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.Objects;
 
 public class ClientBoard extends JFrame implements MouseMotionListener, MouseListener {
 
@@ -23,6 +21,7 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     private String opponent_name;
     private int phase = -1;
     private boolean this_player_move = false;
+    private Stone mouse_pressed = null;
 
 
     public ClientBoard(String player) throws HeadlessException {
@@ -49,7 +48,14 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        Stone stone = get_stone_position(e.getX(), e.getY());
+        if (stone != null) {
+            if (phase == 2) {
+                client.sendData(mouse_pressed, stone, player_name);
+                new SendSwingWorker(this.client, this.player_name, this.panel, this).execute();
+                this_player_move = false;
+            }
+        }
     }
 
     @Override
@@ -64,10 +70,14 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (phase == 1 && this_player_move) {
-            Stone stone = get_stone_position(e.getX(), e.getY());
-            if (stone != null) {
-                client.sendData(stone, "mouse_pressed");
+        if (this_player_move) {
+            mouse_pressed = get_stone_position(e.getX(), e.getY());
+            if (mouse_pressed != null) {
+                if (phase == 1) {
+                    client.sendData(mouse_pressed, "mouse_pressed");
+                } else if (phase == 0) {
+                    client.sendData(mouse_pressed, "remove_mouse_pressed");
+                }
                 new SendSwingWorker(this.client, this.player_name, this.panel, this).execute();
                 this_player_move = false;
             }
@@ -90,6 +100,15 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
 
     public void insert_board(Stone stone) {
         board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = stone;
+    }
+
+    public void remove_board(Stone stone) {
+        board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = null;
+    }
+
+    public void move_board(Stone start, Stone destination) {
+        board[start.getPosOne()][start.getPosTwo()][start.getPosThree()] = null;
+        board[destination.getPosOne()][destination.getPosTwo()][destination.getPosThree()] = destination;
     }
 
     public void setPhase(int phase) {
@@ -173,6 +192,7 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
 
     public void setOpponent(String player) {
         opponent_name = player;
+        client.setOpponent(opponent_name);
         panel.setPlayer_two_name(player);
     }
 
@@ -196,10 +216,37 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
                 panel.setCurrent_state("Wait for Server answer!");
                 break;
             case 10:
-                panel.setCurrent_state(player_name + " you can move!");
+                panel.setCurrent_state(player_name + " you can place!");
                 break;
             case 11:
-                panel.setCurrent_state(opponent_name + " is on his move!");
+                panel.setCurrent_state(opponent_name + " places a stone!");
+                break;
+            case 12:
+                panel.setCurrent_state(player_name + " not a free positon!");
+                break;
+            case 90:
+                panel.setCurrent_state(player_name + " got a mill!");
+                break;
+            case 91:
+                panel.setCurrent_state(opponent_name + " got a mill!");
+                break;
+            case 0:
+                panel.setCurrent_state(player_name + " removes a Stone!");
+                break;
+            case 1:
+                panel.setCurrent_state(opponent_name + " removes a stone!");
+                break;
+            case 2:
+                panel.setCurrent_state(player_name + " ");
+                break;
+            case 29:
+                panel.setCurrent_state(opponent_name + " moves a stone!");
+                break;
+            case 22:
+                panel.setCurrent_state(player_name + " do your move!");
+                break;
+            case 20:
+                panel.setCurrent_state(opponent_name + "  moves a stone!");
                 break;
             default:
                 panel.setCurrent_state("Something went wrong!");

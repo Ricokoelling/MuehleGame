@@ -37,6 +37,10 @@ public class Stone implements Serializable {
         return stone.getPosOne() == this.getPosOne() && stone.getPosTwo() == this.getPosTwo() && stone.getPosThree() == this.getPosThree() && Objects.equals(stone.getPlayer(), this.getPlayer());
     }
 
+    public boolean equals(Stone stone) {
+        return stone.getPosOne() == this.getPosOne() && stone.getPosTwo() == this.getPosTwo() && stone.getPosThree() == this.getPosThree();
+    }
+
     public void setPositions(int x, int y, int z) {
         this.posOne = x;
         this.posTwo = y;

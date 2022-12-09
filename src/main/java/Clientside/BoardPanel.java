@@ -20,11 +20,15 @@ public class BoardPanel extends JPanel {
         this.setVisible(true);
         new GridBagLayout();
         GridBagConstraints g = new GridBagConstraints();
-        current_state = new Label("Wait for other Player \t");
-        current_state.setFont(new Font("Arial", Font.PLAIN, 40));
+        g.fill = GridBagConstraints.NONE;
+        current_state = new Label("Wait for other Player \t", SwingConstants.CENTER);
+        current_state.setFont(new Font("Arial", Font.PLAIN, 37));
         current_state.setBackground(getWoodenColor());
+        current_state.setMinimumSize(new Dimension(800, 65));
+        current_state.setPreferredSize(new Dimension(850, 70));
+        current_state.setMaximumSize(new Dimension(900, 75));
+        current_state.setAlignment(Label.CENTER);
         add(current_state, g);
-
     }
 
     private static int setPos(Stone stone) {

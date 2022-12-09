@@ -9,10 +9,9 @@ public class Main {
 
 /*
 
-TODO:   - implement what happens mill (remove etc)
-        - phase change (send)
-        - phase 2
-        - test all sends etc.
+TODO:   - phase 2 test
+        - phase 2 remove (phase 3)
+        - win conditions
         - test win cant move (...)
 
 
