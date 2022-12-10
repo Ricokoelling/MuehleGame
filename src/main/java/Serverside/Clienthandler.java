@@ -70,8 +70,9 @@ public class Clienthandler implements Runnable {
                                 opponent.objWriter.writeObject(new PlayData(91, data.getStone(), player_name));
                             } else {
                                 if (logic.get_player_stones(player_name) + logic.get_player_stones(opponent.player_name) == logic.getMaxstones()) {
+                                    System.out.println("Phase 2");
                                     this.objWriter.writeObject(new PlayData(29, data.getStone(), player_name));
-                                    opponent.objWriter.writeObject(new PlayData(22, data.getStone(), player_name));
+                                    opponent.objWriter.writeObject(new PlayData(28, data.getStone(), player_name));
                                 } else {
                                     this.objWriter.writeObject(new PlayData(10, data.getStone(), player_name));
                                     opponent.objWriter.writeObject(new PlayData(12, data.getStone(), player_name));
@@ -101,12 +102,15 @@ public class Clienthandler implements Runnable {
                         }
                         break;
                     case 20:
+                        System.out.println(" start: " + data.getStone() + " destination: " + data.getDestination());
                         if (!data.getStone().equal(data.getDestination()) && logic.player_stone(data.getStone(), player_name) && logic.move_possible(data.getStone(), data.getDestination(), player_name)) {
+                            logic.move_stone(data.getStone(), data.getDestination(), data.getPlayer());
                             this.objWriter.writeObject(new PlayData(20, data.getStone(), data.getDestination(), player_name));
                             opponent.objWriter.writeObject(new PlayData(22, data.getStone(), data.getDestination(), player_name));
                         } else {
                             System.out.println("Bill Clinton"); //test
                         }
+                        break;
                     default:
                         System.err.println("Wrong State: " + data.getState());
                         break;

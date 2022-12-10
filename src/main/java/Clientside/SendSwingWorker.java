@@ -26,7 +26,6 @@ public class SendSwingWorker extends SwingWorker<Boolean, String> {
         while (true) {
             Thread.sleep(20);
             int temp = client.wait_for_allowed();
-            System.out.println(temp);
             if (temp != -1) {
                 serverdata = client.getServerdata();
                 if (temp == 1) {

@@ -109,7 +109,8 @@ public class PlayData implements Serializable {
         02 - other player removes a stone (Server -> Client)
 
         Phase change to 2:
-        29 - phase change to 2 and booth player can move (Server -> Client)
+        28 - phase change to 2 and the player is on the move  (Server -> Client)
+        29 - phase change to 2 and booth player can move (Server -> Client) (isn't on move)
         20 - player wants to move to a certain position (Client -> Server)  <-> move was accepted (Server -> Client)
         21 - move was declined (Server -> Client)
         22 - other player moves a stone (Server -> Client)

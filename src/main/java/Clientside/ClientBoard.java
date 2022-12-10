@@ -22,6 +22,7 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     private int phase = -1;
     private boolean this_player_move = false;
     private Stone mouse_pressed = null;
+    private boolean released_mouse_btn_phase_2 = true;
 
 
     public ClientBoard(String player) throws HeadlessException {
@@ -50,10 +51,12 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     public void mouseDragged(MouseEvent e) {
         Stone stone = get_stone_position(e.getX(), e.getY());
         if (stone != null) {
-            if (phase == 2) {
-                client.sendData(mouse_pressed, stone, player_name);
+            if (phase == 2 && !stone.equals(mouse_pressed) && !released_mouse_btn_phase_2) {
+                System.out.println("sending shit");
+                client.sendData(mouse_pressed, stone, "mouse_dragged");
                 new SendSwingWorker(this.client, this.player_name, this.panel, this).execute();
                 this_player_move = false;
+                released_mouse_btn_phase_2 = true;
             }
         }
     }
@@ -72,7 +75,7 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     public void mousePressed(MouseEvent e) {
         if (this_player_move) {
             mouse_pressed = get_stone_position(e.getX(), e.getY());
-            if (mouse_pressed != null) {
+            if (mouse_pressed != null && phase < 2) {
                 if (phase == 1) {
                     client.sendData(mouse_pressed, "mouse_pressed");
                 } else if (phase == 0) {
@@ -86,6 +89,9 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (phase == 2 && mouse_pressed != null) {
+            released_mouse_btn_phase_2 = false;
+        }
     }
 
     @Override

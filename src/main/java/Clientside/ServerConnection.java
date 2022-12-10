@@ -29,7 +29,7 @@ public class ServerConnection implements Runnable {
                     case 11, 1:
                         allowed_move = 0;
                         break;
-                    case 12, -1, 91, 22, 24:
+                    case 12, -1, 91, 22, 24, 28:
                         achived_data = true;
                         break;
 
