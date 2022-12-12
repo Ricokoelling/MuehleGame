@@ -79,8 +79,8 @@ public class SendSwingWorker extends SwingWorker<Boolean, String> {
                 new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
                 break;
             case 1:
-                if (serverdata.getState() == 2) {
-                    clientBoard.current_state(1);
+                if (serverdata.getReason() == 2) {
+                    clientBoard.current_state(3);
                     clientBoard.setThis_player_move(true);
                 } else {
                     System.err.println("[SEND] Wrong Reason");
@@ -98,6 +98,27 @@ public class SendSwingWorker extends SwingWorker<Boolean, String> {
                 clientBoard.move_board(client.getSendata().getStone(), client.getServerdata().getDestination());
                 clientBoard.current_state(20);
                 new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
+                break;
+            case 23:
+                clientBoard.move_board(client.getSendata().getStone(), client.getServerdata().getDestination());
+                panel.move_stone(client.getSendata().getStone(), client.getServerdata().getDestination());
+                clientBoard.setPhase(0);
+                clientBoard.current_state(90);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                clientBoard.setThis_player_move(true);
+                clientBoard.current_state(0);
+                break;
+            case 21:
+                if (serverdata.getReason() == 3) {
+                    clientBoard.current_state(21);
+                    clientBoard.setThis_player_move(true);
+                } else {
+                    System.err.println("[SEND] Wrong Reason!");
+                }
                 break;
             default:
                 System.out.println("[SEND] Smth went wrong!!");

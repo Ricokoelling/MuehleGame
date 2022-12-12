@@ -62,7 +62,6 @@ public class Client {
 
     protected void sendData(Stone start, Stone destination, String type) {
         PlayData data = null;
-        System.out.println("send more shit");
         if (Objects.equals("mouse_dragged", type)) {
             data = new PlayData(20, start, destination, player);
         }

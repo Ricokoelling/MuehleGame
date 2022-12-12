@@ -52,7 +52,6 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
         Stone stone = get_stone_position(e.getX(), e.getY());
         if (stone != null) {
             if (phase == 2 && !stone.equals(mouse_pressed) && !released_mouse_btn_phase_2) {
-                System.out.println("sending shit");
                 client.sendData(mouse_pressed, stone, "mouse_dragged");
                 new SendSwingWorker(this.client, this.player_name, this.panel, this).execute();
                 this_player_move = false;
@@ -75,6 +74,9 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     public void mousePressed(MouseEvent e) {
         if (this_player_move) {
             mouse_pressed = get_stone_position(e.getX(), e.getY());
+            if (phase == 2) {
+                released_mouse_btn_phase_2 = false;
+            }
             if (mouse_pressed != null && phase < 2) {
                 if (phase == 1) {
                     client.sendData(mouse_pressed, "mouse_pressed");
@@ -245,6 +247,9 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
             case 2:
                 panel.setCurrent_state(player_name + " ");
                 break;
+            case 3:
+                panel.setCurrent_state(player_name + " can't remove stone");
+                break;
             case 29:
                 panel.setCurrent_state(opponent_name + " moves a stone!");
                 break;
@@ -253,6 +258,9 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
                 break;
             case 20:
                 panel.setCurrent_state(opponent_name + "  moves a stone!");
+                break;
+            case 21:
+                panel.setCurrent_state(player_name + " move not possible!");
                 break;
             default:
                 panel.setCurrent_state("Something went wrong!");

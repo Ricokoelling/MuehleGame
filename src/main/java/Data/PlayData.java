@@ -46,6 +46,14 @@ public class PlayData implements Serializable {
         this.reason = reason;
     }
 
+    public PlayData(int state, Stone start, Stone destination, String player, int reason) {
+        this.state = state;
+        this.stone = start;
+        this.destination = destination;
+        this.player = player;
+        this.reason = reason;
+    }
+
     public PlayData(int state, String opponent, boolean init) {
         this.state = state;
         this.init = init;
@@ -93,6 +101,7 @@ public class PlayData implements Serializable {
            Reasons:
                 1 - Position was taken
                 2 - not your stone
+                3 - move wasn't possible
 
 
         10 - player wants to place a stone (Client -> Server) <-> move was accepted (Server -> Client)

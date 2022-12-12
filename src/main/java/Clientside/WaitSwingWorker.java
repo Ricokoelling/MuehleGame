@@ -76,11 +76,23 @@ public class WaitSwingWorker extends SwingWorker<Boolean, String> {
                 break;
             case 28:
                 clientBoard.insert_board(serverdata.getStone());
-                clientBoard.insert_board(serverdata.getStone());
                 panel.placeStone(serverdata.getStone());
                 clientBoard.current_state(22);
                 clientBoard.setPhase(2);
                 clientBoard.setThis_player_move(true);
+                break;
+            case 24:
+                clientBoard.move_board(serverdata.getStone(), serverdata.getDestination());
+                panel.move_stone(serverdata.getStone(), serverdata.getDestination());
+                clientBoard.setThis_player_move(false);
+                clientBoard.current_state(91);
+                try {
+                    Thread.sleep(1000);
+                    clientBoard.current_state(1);
+                    new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             default:
                 System.err.println("[WAIT] smth went wrong!");

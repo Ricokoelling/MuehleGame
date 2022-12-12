@@ -105,10 +105,14 @@ public class Clienthandler implements Runnable {
                         System.out.println(" start: " + data.getStone() + " destination: " + data.getDestination());
                         if (!data.getStone().equal(data.getDestination()) && logic.player_stone(data.getStone(), player_name) && logic.move_possible(data.getStone(), data.getDestination(), player_name)) {
                             logic.move_stone(data.getStone(), data.getDestination(), data.getPlayer());
+                            if (logic.muehle(player_name)) {
+                                this.objWriter.writeObject(new PlayData(23, data.getStone(), data.getDestination(), player_name));
+                                opponent.objWriter.writeObject(new PlayData(24, data.getStone(), data.getDestination(), player_name));
+                            }
                             this.objWriter.writeObject(new PlayData(20, data.getStone(), data.getDestination(), player_name));
                             opponent.objWriter.writeObject(new PlayData(22, data.getStone(), data.getDestination(), player_name));
                         } else {
-                            System.out.println("Bill Clinton"); //test
+                            this.objWriter.writeObject(new PlayData(21, data.getStone(), data.getDestination(), player_name, 3));
                         }
                         break;
                     default:
