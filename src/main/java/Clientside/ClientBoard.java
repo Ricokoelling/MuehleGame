@@ -51,7 +51,7 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     public void mouseDragged(MouseEvent e) {
         Stone stone = get_stone_position(e.getX(), e.getY());
         if (stone != null) {
-            if (phase == 2 && !stone.equals(mouse_pressed) && !released_mouse_btn_phase_2) {
+            if (phase == 2 && !stone.equals(mouse_pressed) && !released_mouse_btn_phase_2 && this_player_move) {
                 client.sendData(mouse_pressed, stone, "mouse_dragged");
                 new SendSwingWorker(this.client, this.player_name, this.panel, this).execute();
                 this_player_move = false;

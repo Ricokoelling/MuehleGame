@@ -16,6 +16,7 @@ public class Clienthandler implements Runnable {
     private final ArrayList<Clienthandler> clients;
     private String player_name;
     private Clienthandler opponent;
+    private int old_case = -1; //used for remove from different phases
 
     public Clienthandler(Socket client, ArrayList<Clienthandler> clients, LogicDealer logic) throws IOException {
         this.clients = clients;
@@ -66,6 +67,7 @@ public class Clienthandler implements Runnable {
                             System.out.println(logic.get_player_stones(player_name));
                             if (logic.get_player_stones(player_name) > 2 && logic.muehle(player_name)) {
                                 System.out.println("Player " + player_name + " got a mill.");
+                                old_case = 10;
                                 this.objWriter.writeObject(new PlayData(90, data.getStone(), player_name));
                                 opponent.objWriter.writeObject(new PlayData(91, data.getStone(), player_name));
                             } else {
@@ -95,8 +97,13 @@ public class Clienthandler implements Runnable {
                                     opponent.objWriter.writeObject(new PlayData(24, data.getStone(), player_name));
                                 }
                             }
-                            this.objWriter.writeObject(new PlayData(0, data.getStone(), player_name));
-                            opponent.objWriter.writeObject(new PlayData(2, data.getStone(), player_name));
+                            if (old_case == 10) {
+                                this.objWriter.writeObject(new PlayData(0, data.getStone(), player_name));
+                                opponent.objWriter.writeObject(new PlayData(2, data.getStone(), player_name));
+                            } else if (old_case == 20) {
+                                this.objWriter.writeObject(new PlayData(25, data.getStone(), player_name));
+                                opponent.objWriter.writeObject(new PlayData(26, data.getStone(), player_name));
+                            }
                         } else {
                             this.objWriter.writeObject(new PlayData(1, data.getStone(), player_name, 2));
                         }
@@ -106,11 +113,13 @@ public class Clienthandler implements Runnable {
                         if (!data.getStone().equal(data.getDestination()) && logic.player_stone(data.getStone(), player_name) && logic.move_possible(data.getStone(), data.getDestination(), player_name)) {
                             logic.move_stone(data.getStone(), data.getDestination(), data.getPlayer());
                             if (logic.muehle(player_name)) {
+                                old_case = 20;
                                 this.objWriter.writeObject(new PlayData(23, data.getStone(), data.getDestination(), player_name));
                                 opponent.objWriter.writeObject(new PlayData(24, data.getStone(), data.getDestination(), player_name));
+                            } else {
+                                this.objWriter.writeObject(new PlayData(20, data.getStone(), data.getDestination(), player_name));
+                                opponent.objWriter.writeObject(new PlayData(22, data.getStone(), data.getDestination(), player_name));
                             }
-                            this.objWriter.writeObject(new PlayData(20, data.getStone(), data.getDestination(), player_name));
-                            opponent.objWriter.writeObject(new PlayData(22, data.getStone(), data.getDestination(), player_name));
                         } else {
                             this.objWriter.writeObject(new PlayData(21, data.getStone(), data.getDestination(), player_name, 3));
                         }

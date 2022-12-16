@@ -125,6 +125,8 @@ public class PlayData implements Serializable {
         22 - other player moves a stone (Server -> Client)
         23 - from remove to player (Server -> Client)
         24 - from remove to opponent (Server -> Client)
+        25 - allowed remove (Server -> Client)
+        26 - other player removes a stone( Server -> Client)
 
 
  */

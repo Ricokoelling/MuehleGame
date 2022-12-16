@@ -94,8 +94,14 @@ public class WaitSwingWorker extends SwingWorker<Boolean, String> {
                     throw new RuntimeException(e);
                 }
                 break;
+            case 26:
+                clientBoard.remove_board(serverdata.getStone());
+                panel.remove(serverdata.getStone());
+                clientBoard.setThis_player_move(true);
+                clientBoard.current_state(22);
+                break;
             default:
-                System.err.println("[WAIT] smth went wrong!");
+                System.err.println("[WAIT] something went wrong!");
                 break;
         }
         super.done();

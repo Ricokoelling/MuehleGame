@@ -120,8 +120,15 @@ public class SendSwingWorker extends SwingWorker<Boolean, String> {
                     System.err.println("[SEND] Wrong Reason!");
                 }
                 break;
+            case 25:
+                panel.remove(serverdata.getStone());
+                clientBoard.remove_board(serverdata.getStone());
+                clientBoard.setPhase(2);
+                clientBoard.current_state(20);
+                new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
+                break;
             default:
-                System.out.println("[SEND] Smth went wrong!!");
+                System.err.println("[SEND] Something went wrong!!");
                 break;
         }
     }

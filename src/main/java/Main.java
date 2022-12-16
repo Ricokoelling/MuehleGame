@@ -9,8 +9,9 @@ public class Main {
 
 /*
 
-TODO:   - phase 2 muehle
+TODO:   - phase 1 straight to phase 3
         - phase 2 remove (phase 3)
+        - phase 3
         - win conditions
         - test win cant move (...)
 

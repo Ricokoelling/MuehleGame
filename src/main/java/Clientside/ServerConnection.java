@@ -23,13 +23,13 @@ public class ServerConnection implements Runnable {
             while (true) {
                 serverdata = (PlayData) objReader.readObject();
                 switch (serverdata.getState()) {
-                    case 10, 90, 0, 29, 20, 23:
+                    case 10, 90, 0, 29, 20, 23, 25:
                         allowed_move = 1;
                         break;
                     case 11, 1, 21:
                         allowed_move = 0;
                         break;
-                    case 12, -1, 91, 22, 24, 28:
+                    case 12, -1, 91, 22, 24, 28, 26:
                         achived_data = true;
                         break;
 

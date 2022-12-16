@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b15ea622-b002-49c9-8995-ebaa88260455" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/ClientBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/ClientBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/SendSwingWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/SendSwingWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/ServerConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/ServerConnection.java" afterDir="false" />
@@ -73,7 +72,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Server">
+  <component name="RunManager" selected="Application.Main_two">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Muehle" />
@@ -108,9 +107,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main_two" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Server" />
-        <item itemvalue="Application.Main_two" />
       </list>
     </recent_temporary>
   </component>
@@ -159,6 +158,8 @@
       <workItem from="1670608418933" duration="4784000" />
       <workItem from="1670627557072" duration="2963000" />
       <workItem from="1670877849563" duration="2792000" />
+      <workItem from="1671130810120" duration="1599000" />
+      <workItem from="1671198369058" duration="1781000" />
     </task>
     <servers />
   </component>
