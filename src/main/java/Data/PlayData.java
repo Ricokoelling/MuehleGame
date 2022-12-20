@@ -102,6 +102,7 @@ public class PlayData implements Serializable {
                 1 - Position was taken
                 2 - not your stone
                 3 - move wasn't possible
+                4 - jump wasn't possible
 
 
         10 - player wants to place a stone (Client -> Server) <-> move was accepted (Server -> Client)
@@ -119,7 +120,7 @@ public class PlayData implements Serializable {
 
         Phase change to 2:
         28 - phase change to 2 and the player is on the move  (Server -> Client)
-        29 - phase change to 2 and booth player can move (Server -> Client) (isn't on move)
+        29 - phase change to 2 and the other player can move (Server -> Client) (isn't on move)
         20 - player wants to move to a certain position (Client -> Server)  <-> move was accepted (Server -> Client)
         21 - move was declined (Server -> Client)
         22 - other player moves a stone (Server -> Client)
@@ -127,6 +128,17 @@ public class PlayData implements Serializable {
         24 - from remove to opponent (Server -> Client)
         25 - allowed remove (Server -> Client)
         26 - other player removes a stone( Server -> Client)
+
+        Phase change to 3: reason 30 (player jump) reason 20 (player move)
+        38 - phase change to phase 3 and this player moves (he is in phase 3 ) (Server -> Client)
+        39 - phase change to phase 3 and the other player can move (Server -> Client)
+        30 - player wants to jump (Client -> Server) <-> move was accepted (Server -> Client)
+        31 - move was declined (Server -> Client)
+        32 - other player jumps (Server -> Client)
+        33 - from remove to player (Server -> Client)
+        34 - from remove to opponent (Server -> Client)
+        35 - allowed remove (Server -> Client)
+        36 - other player removes (Server -> Client)
 
 
  */

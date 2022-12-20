@@ -21,6 +21,7 @@ public class LogicDealer {
 
     public LogicDealer(String playerOne, String playerTwo) {
         this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
     }
 
     /**
@@ -35,7 +36,7 @@ public class LogicDealer {
         } else if (stone.getPlayer().equals(this.playerTwo)) {
             playerTwoStones.add(stone);
         } else {
-            System.err.println("[Logic] false Player name" + stone.getPlayer() + playerOne);
+            System.err.println("[Logic] false Player name " + stone.getPlayer() + playerOne);
         }
     }
 

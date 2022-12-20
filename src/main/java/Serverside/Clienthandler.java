@@ -37,6 +37,10 @@ public class Clienthandler implements Runnable {
         }
     }
 
+    public void reset() { //resets the howl board
+        old_case = -1;
+    }
+
     @Override
     public void run() {
         try {
@@ -66,15 +70,14 @@ public class Clienthandler implements Runnable {
                             logic.placeStone(data.getStone());
                             System.out.println(logic.get_player_stones(player_name));
                             if (logic.get_player_stones(player_name) > 2 && logic.muehle(player_name)) {
-                                System.out.println("Player " + player_name + " got a mill.");
                                 old_case = 10;
                                 this.objWriter.writeObject(new PlayData(90, data.getStone(), player_name));
                                 opponent.objWriter.writeObject(new PlayData(91, data.getStone(), player_name));
                             } else {
                                 if (logic.get_player_stones(player_name) + logic.get_player_stones(opponent.player_name) == logic.getMaxstones()) {
                                     System.out.println("Phase 2");
-                                    this.objWriter.writeObject(new PlayData(29, data.getStone(), player_name));
-                                    opponent.objWriter.writeObject(new PlayData(28, data.getStone(), player_name));
+                                    this.objWriter.writeObject(new PlayData(29, data.getStone(), player_name, 1));
+                                    opponent.objWriter.writeObject(new PlayData(28, data.getStone(), player_name, 1));
                                 } else {
                                     this.objWriter.writeObject(new PlayData(10, data.getStone(), player_name));
                                     opponent.objWriter.writeObject(new PlayData(12, data.getStone(), player_name));
@@ -89,20 +92,38 @@ public class Clienthandler implements Runnable {
                         Stone remove = new Stone(opponent.player_name, data.getStone().getPosOne(), data.getStone().getPosTwo(), data.getStone().getPosThree());
                         data.setStone(remove);
                         if (logic.remove(data.getStone(), opponent.player_name)) {
+                            System.out.println(player_name + " " + logic.get_player_stones(player_name));
+                            System.out.println(opponent.player_name + " " + logic.get_player_stones(opponent.player_name));
+                            System.out.println("maxstones: " + logic.getMaxstones());
                             if (logic.get_player_stones(player_name) + logic.get_player_stones(opponent.player_name) == logic.getMaxstones()) {
-                                if (logic.get_player_stones(opponent.player_name) == 3) {
-                                    // phase 3
+                                if (logic.get_player_stones(opponent.player_name) == 3 || logic.get_player_stones(player_name) == 3) {
+                                    if (logic.get_player_stones(opponent.player_name) == 3) {
+                                        this.objWriter.writeObject(new PlayData(39, data.getStone(), player_name, 20));
+                                        opponent.objWriter.writeObject(new PlayData(38, data.getStone(), player_name, 30));
+                                    } else {
+                                        this.objWriter.writeObject(new PlayData(39, data.getStone(), player_name, 30));
+                                        opponent.objWriter.writeObject(new PlayData(38, data.getStone(), player_name, 20));
+                                    }
                                 } else {
-                                    this.objWriter.writeObject(new PlayData(23, data.getStone(), player_name));
-                                    opponent.objWriter.writeObject(new PlayData(24, data.getStone(), player_name));
+                                    this.objWriter.writeObject(new PlayData(29, data.getStone(), player_name, 0));
+                                    opponent.objWriter.writeObject(new PlayData(28, data.getStone(), player_name, 0));
                                 }
-                            }
-                            if (old_case == 10) {
-                                this.objWriter.writeObject(new PlayData(0, data.getStone(), player_name));
-                                opponent.objWriter.writeObject(new PlayData(2, data.getStone(), player_name));
-                            } else if (old_case == 20) {
-                                this.objWriter.writeObject(new PlayData(25, data.getStone(), player_name));
-                                opponent.objWriter.writeObject(new PlayData(26, data.getStone(), player_name));
+                            } else {
+                                if (old_case == 10) {
+                                    this.objWriter.writeObject(new PlayData(0, data.getStone(), player_name));
+                                    opponent.objWriter.writeObject(new PlayData(2, data.getStone(), player_name));
+                                } else if (old_case == 20) {
+                                    this.objWriter.writeObject(new PlayData(25, data.getStone(), player_name));
+                                    opponent.objWriter.writeObject(new PlayData(26, data.getStone(), player_name));
+                                } else if (old_case == 30) {
+                                    if (logic.get_player_stones(player_name) == 3 ^ logic.get_player_stones(opponent.getPlayer_name()) == 3) {
+                                        this.objWriter.writeObject(new PlayData(35, data.getStone(), player_name));
+                                        opponent.objWriter.writeObject(new PlayData(26, data.getStone(), player_name));
+                                    } else if (logic.get_player_stones(player_name) == 3 && logic.get_player_stones(opponent.getPlayer_name()) == 3) {
+                                        this.objWriter.writeObject(new PlayData(49, data.getStone(), player_name));
+                                        opponent.objWriter.writeObject(new PlayData(48, data.getStone(), player_name));
+                                    }
+                                }
                             }
                         } else {
                             this.objWriter.writeObject(new PlayData(1, data.getStone(), player_name, 2));
@@ -123,6 +144,40 @@ public class Clienthandler implements Runnable {
                         } else {
                             this.objWriter.writeObject(new PlayData(21, data.getStone(), data.getDestination(), player_name, 3));
                         }
+                        break;
+                    case 30:
+                        if (logic.free_position(data.getDestination()) && !data.getStone().equal(data.getDestination()) && logic.player_stone(data.getStone(), player_name)) {
+                            logic.jump_stone(data.getStone(), data.getDestination(), player_name);
+                            if (data.getReason() == 30) {
+                                if (logic.muehle(player_name)) {
+                                    old_case = 30;
+                                    this.objWriter.writeObject(new PlayData(23, data.getStone(), data.getDestination(), player_name));
+                                    opponent.objWriter.writeObject(new PlayData(24, data.getStone(), data.getDestination(), player_name));
+                                } else {
+                                    this.objWriter.writeObject(new PlayData(30, data.getStone(), data.getDestination(), player_name, 30));
+                                    opponent.objWriter.writeObject(new PlayData(32, data.getStone(), data.getDestination(), player_name, 30));
+                                }
+                            } else if (data.getReason() == 20) {
+                                if (logic.muehle(player_name)) { // if this player wins the other player doesn't have enough stones to play
+                                    this.objWriter.writeObject(new PlayData(50, data.getStone(), data.getDestination(), player_name));
+                                    opponent.objWriter.writeObject(new PlayData(50, data.getStone(), data.getDestination(), player_name));
+                                } else {
+                                    this.objWriter.writeObject(new PlayData(30, data.getStone(), data.getDestination(), player_name, 20));
+                                    opponent.objWriter.writeObject(new PlayData(32, data.getStone(), data.getDestination(), player_name, 20));
+                                }
+                            } else {
+                                System.err.println("Wrong reason! " + data.getReason());
+                            }
+                        } else {
+                            if (data.getReason() == 20) {
+                                this.objWriter.writeObject(new PlayData(31, data.getStone(), data.getDestination(), player_name, 3));
+                            } else if (data.getReason() == 30) {
+                                this.objWriter.writeObject(new PlayData(31, data.getStone(), data.getDestination(), player_name, 4));
+                            }
+                        }
+                        break;
+                    case 40:
+
                         break;
                     default:
                         System.err.println("Wrong State: " + data.getState());

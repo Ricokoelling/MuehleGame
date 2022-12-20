@@ -3,16 +3,16 @@ import OfflineGame.BoardFrame;
 
 public class Main {
     public static void main(String[] args) {
+        //BoardFrame frame = new BoardFrame("Rico", "max");
         ClientBoard clientBoard = new ClientBoard("Rico");
     }
 }
 
 /*
 
-TODO:   - phase 1 straight to phase 3
-        - phase 2 remove (phase 3)
-        - phase 3
+TODO:   - phase 4
         - win conditions
+        - test everything 10 times (full matches)
         - test win cant move (...)
 
 

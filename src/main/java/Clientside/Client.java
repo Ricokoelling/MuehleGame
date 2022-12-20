@@ -64,6 +64,12 @@ public class Client {
         PlayData data = null;
         if (Objects.equals("mouse_dragged", type)) {
             data = new PlayData(20, start, destination, player);
+        } else if (Objects.equals("2_mouse_released", type)) {
+            data = new PlayData(30, start, destination, player, 20);
+        } else if (Objects.equals("3_mouse_released", type)) {
+            data = new PlayData(30, start, destination, player, 30);
+        } else if (Objects.equals("4_mouse_released", type)) {
+            data = new PlayData(40, start, destination, player);
         }
 
         assert data != null;

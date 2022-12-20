@@ -23,16 +23,19 @@ public class ServerConnection implements Runnable {
             while (true) {
                 serverdata = (PlayData) objReader.readObject();
                 switch (serverdata.getState()) {
-                    case 10, 90, 0, 29, 20, 23, 25:
+                    case 10, 90, 0, 29, 20, 23, 25, 39, 30, 33, 35:
                         allowed_move = 1;
                         break;
-                    case 11, 1, 21:
+                    case 11, 1, 21, 31:
                         allowed_move = 0;
                         break;
-                    case 12, -1, 91, 22, 24, 28, 26:
+                    case 12, -1, 2, 91, 22, 24, 28, 26, 38, 32, 36:
                         achived_data = true;
                         break;
-
+                    case 50:
+                        allowed_move = 1;
+                        achived_data = true;
+                        break;
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

@@ -23,6 +23,7 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     private boolean this_player_move = false;
     private Stone mouse_pressed = null;
     private boolean released_mouse_btn_phase_2 = true;
+    private boolean this_player_phase_3 = false;
 
 
     public ClientBoard(String player) throws HeadlessException {
@@ -50,9 +51,13 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     @Override
     public void mouseDragged(MouseEvent e) {
         Stone stone = get_stone_position(e.getX(), e.getY());
-        if (stone != null) {
-            if (phase == 2 && !stone.equals(mouse_pressed) && !released_mouse_btn_phase_2 && this_player_move) {
-                client.sendData(mouse_pressed, stone, "mouse_dragged");
+        if (stone != null && mouse_pressed != null) {
+            if ((phase == 2 || (phase == 3 && !this_player_phase_3)) && !stone.equals(mouse_pressed) && !released_mouse_btn_phase_2 && this_player_move) {
+                if (phase == 2) {
+                    client.sendData(mouse_pressed, stone, "mouse_dragged");
+                } else if (phase == 3) {
+                    client.sendData(mouse_pressed, stone, "2_mouse_released");
+                }
                 new SendSwingWorker(this.client, this.player_name, this.panel, this).execute();
                 this_player_move = false;
                 released_mouse_btn_phase_2 = true;
@@ -74,7 +79,7 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     public void mousePressed(MouseEvent e) {
         if (this_player_move) {
             mouse_pressed = get_stone_position(e.getX(), e.getY());
-            if (phase == 2) {
+            if (phase >= 2) {
                 released_mouse_btn_phase_2 = false;
             }
             if (mouse_pressed != null && phase < 2) {
@@ -91,8 +96,20 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (phase == 2 && mouse_pressed != null) {
-            released_mouse_btn_phase_2 = false;
+        if (this_player_move) {
+            if (phase == 2 && mouse_pressed != null) {
+                released_mouse_btn_phase_2 = false;
+            }
+            if (mouse_pressed != null && ((phase == 3 && this_player_phase_3) || phase == 4)) {
+                Stone stone = get_stone_position(e.getX(), e.getY());
+                if (phase == 3) {
+                    client.sendData(mouse_pressed, stone, "3_mouse_released");
+                } else if (phase == 4) {
+                    client.sendData(mouse_pressed, stone, "4_mouse_released");
+                }
+                new SendSwingWorker(this.client, this.player_name, this.panel, this).execute();
+                this_player_move = false;
+            }
         }
     }
 
@@ -218,6 +235,12 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
         }
     }
 
+    public void setPhase3_player(int x) {
+        if (x == 30) {
+            this_player_phase_3 = true;
+        }
+    }
+
     protected void current_state(int state) {
         switch (state) {
             case -1:
@@ -261,6 +284,18 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
                 break;
             case 21:
                 panel.setCurrent_state(player_name + " move not possible!");
+                break;
+            case 30:
+                panel.setCurrent_state(player_name + " jump!");
+                break;
+            case 32:
+                panel.setCurrent_state(opponent_name + " jumps!");
+                break;
+            case 31:
+                panel.setCurrent_state(player_name + " jump was not possible!");
+                break;
+            case 50:
+                panel.setCurrent_state("shit man someone won");
                 break;
             default:
                 panel.setCurrent_state("Something went wrong!");
