@@ -12,7 +12,9 @@ public class WaitSwingWorker extends SwingWorker<Boolean, String> {
     private final ClientBoard clientBoard;
     private PlayData serverdata;
 
-
+    /**
+     * Constructor for the thread which waits for server data from the opponent move
+     */
     public WaitSwingWorker(Client client, String player, BoardPanel panel, ClientBoard clientBoard) {
         this.client = client;
         this.player = player;
@@ -38,18 +40,18 @@ public class WaitSwingWorker extends SwingWorker<Boolean, String> {
     protected void done() {
         System.out.println("Got op Data...");
         switch (serverdata.getState()) {
-            case -1:
+            case -1 -> {
                 clientBoard.setOpponent(serverdata.getPlayer());
                 clientBoard.setPlayer_Position(serverdata.isInit());
                 clientBoard.setPhase(1);
-                break;
-            case 12:
+            }
+            case 12 -> {
                 clientBoard.insert_board(serverdata.getStone());
                 panel.placeStone(serverdata.getStone());
                 clientBoard.setThis_player_move(true);
                 clientBoard.current_state(10);
-                break;
-            case 91:
+            }
+            case 91 -> {
                 clientBoard.insert_board(serverdata.getStone());
                 panel.placeStone(serverdata.getStone());
                 clientBoard.setThis_player_move(false);
@@ -61,20 +63,20 @@ public class WaitSwingWorker extends SwingWorker<Boolean, String> {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-                break;
-            case 2:
+            }
+            case 2 -> {
                 clientBoard.remove_board(serverdata.getStone());
                 panel.remove(serverdata.getStone());
                 clientBoard.setThis_player_move(true);
                 clientBoard.current_state(10);
-                break;
-            case 22:
+            }
+            case 22 -> {
                 clientBoard.move_board(serverdata.getStone(), serverdata.getDestination());
                 panel.move_stone(serverdata.getStone(), serverdata.getDestination());
                 clientBoard.setThis_player_move(true);
                 clientBoard.current_state(22);
-                break;
-            case 28:
+            }
+            case 28 -> {
                 if (serverdata.getReason() == 1) {
                     clientBoard.insert_board(serverdata.getStone());
                     panel.placeStone(serverdata.getStone());
@@ -87,8 +89,8 @@ public class WaitSwingWorker extends SwingWorker<Boolean, String> {
                 clientBoard.current_state(22);
                 clientBoard.setPhase(2);
                 clientBoard.setThis_player_move(true);
-                break;
-            case 24:
+            }
+            case 24 -> {
                 clientBoard.move_board(serverdata.getStone(), serverdata.getDestination());
                 panel.move_stone(serverdata.getStone(), serverdata.getDestination());
                 clientBoard.setThis_player_move(false);
@@ -100,14 +102,14 @@ public class WaitSwingWorker extends SwingWorker<Boolean, String> {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-                break;
-            case 26:
+            }
+            case 26 -> {
                 clientBoard.remove_board(serverdata.getStone());
                 panel.remove(serverdata.getStone());
                 clientBoard.setThis_player_move(true);
                 clientBoard.current_state(22);
-                break;
-            case 38:
+            }
+            case 38 -> {
                 clientBoard.remove_board(serverdata.getStone());
                 panel.remove(serverdata.getStone());
                 clientBoard.setPhase(3);
@@ -118,8 +120,8 @@ public class WaitSwingWorker extends SwingWorker<Boolean, String> {
                 } else {
                     clientBoard.current_state(30);
                 }
-                break;
-            case 32:
+            }
+            case 32 -> {
                 clientBoard.move_board(serverdata.getStone(), serverdata.getDestination());
                 panel.move_stone(serverdata.getStone(), serverdata.getDestination());
                 clientBoard.setThis_player_move(true);
@@ -128,10 +130,27 @@ public class WaitSwingWorker extends SwingWorker<Boolean, String> {
                 } else {
                     clientBoard.current_state(22);
                 }
-                break;
-            default:
-                System.err.println("[WAIT] something went wrong!");
-                break;
+            }
+            case 48 -> {
+                clientBoard.remove_board(serverdata.getStone());
+                panel.remove(serverdata.getStone());
+                clientBoard.setPhase(4);
+                clientBoard.current_state(30);
+                clientBoard.setThis_player_move(true);
+            }
+            case 42 -> {
+                clientBoard.move_board(serverdata.getStone(), serverdata.getDestination());
+                panel.move_stone(serverdata.getStone(), serverdata.getDestination());
+                clientBoard.setThis_player_move(true);
+                clientBoard.current_state(30);
+            }
+            case 50 -> {
+                clientBoard.setPhase(5);
+                clientBoard.current_state(52);
+                clientBoard.move_board(serverdata.getStone(), serverdata.getDestination());
+                panel.move_stone(serverdata.getStone(), serverdata.getDestination());
+            }
+            default -> System.err.println("[WAIT] something went wrong!");
         }
         super.done();
 

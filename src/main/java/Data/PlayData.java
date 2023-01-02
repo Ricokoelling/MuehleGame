@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class PlayData implements Serializable {
 
-    private int state = -1;
+    private final int state;
+    private final String player;
     private Stone stone = null;
-    private String player = null;
     private int reason = -1;
     private Stone destination = null;
     private boolean init;

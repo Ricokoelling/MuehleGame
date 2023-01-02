@@ -16,12 +16,16 @@ public class Client {
     private PlayData sendata;
 
 
+    /**
+     * Constructor
+     */
     public Client(String player) {
         try {
             Socket client = new Socket("localhost", 1337);
             serverConn = new ServerConnection(client);
             objWriter = new ObjectOutputStream(client.getOutputStream());
-            System.out.println("[ClientSide.Client] connected");
+            System.out.println("[Client] connected");
+
         } catch (IOException e) {
             System.out.println("Beim Erstellen des Clients ist ein Fehler aufgetreten");
             e.printStackTrace();
@@ -33,7 +37,11 @@ public class Client {
     }
     // *******************************************************************************
 
-    // Send Stuff
+    // Send
+
+    /**
+     * sends initial data to the server
+     */
     private void send_init() {
         PlayData data = new PlayData(-1, null, player);
         try {
@@ -43,6 +51,11 @@ public class Client {
         }
     }
 
+    /**
+     * sends data from the mouse events to the server
+     *
+     * @param type whether it was place or remove
+     */
     protected void sendData(Stone stone, String type) {
         PlayData data = null;
         if (Objects.equals("mouse_pressed", type)) {
@@ -60,6 +73,11 @@ public class Client {
         }
     }
 
+    /**
+     * sends data from the mouse events to the server
+     *
+     * @param type whether it was move or jump
+     */
     protected void sendData(Stone start, Stone destination, String type) {
         PlayData data = null;
         if (Objects.equals("mouse_dragged", type)) {
@@ -84,8 +102,11 @@ public class Client {
 
     // *******************************************************************************
 
-    //Wait Stuff
-    //
+    //Wait
+
+    /**
+     * waits till the server responded after sending out data
+     */
     public int wait_for_allowed() {
         int temp = serverConn.isAllowed_move();
         if (temp == 1) {
@@ -98,6 +119,9 @@ public class Client {
         return -1;
     }
 
+    /**
+     * waits for data from the server
+     */
     public boolean wait_for_data() {
         if (serverConn.isAchived_data()) {
             serverdata = serverConn.getServerdata();
@@ -109,16 +133,12 @@ public class Client {
     // *******************************************************************************
 
     //Getter
+    
     public PlayData getServerdata() {
         return serverdata;
     }
 
     public PlayData getSendata() {
         return sendata;
-    }
-
-    //Setter
-
-    public void setOpponent(String opponent) {
     }
 }

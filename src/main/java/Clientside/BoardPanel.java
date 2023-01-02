@@ -15,6 +15,9 @@ public class BoardPanel extends JPanel {
     private String player_one_name;
     private String player_two_name;
 
+    /**
+     * constructor
+     */
     public BoardPanel() {
         this.setSize(1080, 720);
         this.setVisible(true);
@@ -31,6 +34,9 @@ public class BoardPanel extends JPanel {
         add(current_state, g);
     }
 
+    /**
+     * the new positions are complied to old ones to ensure the right position on the board
+     */
     private static int setPos(Stone stone) {
         if (stone == null) {
             return 0;
@@ -87,6 +93,9 @@ public class BoardPanel extends JPanel {
         return -1;
     }
 
+    /**
+     * sets label text
+     */
     public void setCurrent_state(String text) {
         current_state.setText(text);
         update(this.getGraphics());
@@ -100,22 +109,34 @@ public class BoardPanel extends JPanel {
         this.player_two_name = player_two_name;
     }
 
+    /**
+     * shows stone on the board
+     */
     protected void placeStone(Stone stone) {
         board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = stone;
         repaint();
     }
 
+    /**
+     * removes stone from the board
+     */
     protected void remove(Stone stone) {
         board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = null;
         repaint();
     }
 
+    /**
+     * moves stone on the board
+     */
     protected void move_stone(Stone start, Stone destination) {
         board[start.getPosOne()][start.getPosTwo()][start.getPosThree()] = null;
         board[destination.getPosOne()][destination.getPosTwo()][destination.getPosThree()] = destination;
         repaint();
     }
 
+    /**
+     * clears everything before repaint to ensure nothing gets mixed up
+     */
     private void clearRect(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;
         g2D.clearRect(0, 0, this.getWidth(), this.getHeight());

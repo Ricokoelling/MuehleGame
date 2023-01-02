@@ -3,18 +3,12 @@ import OfflineGame.BoardFrame;
 
 public class Main {
     public static void main(String[] args) {
-        //BoardFrame frame = new BoardFrame("Rico", "max");
+        //BoardFrame frame = new BoardFrame("Rico", "Max");
         ClientBoard clientBoard = new ClientBoard("Rico");
     }
 }
 
 /*
-
-TODO:   - phase 4
-        - win conditions
-        - test everything 10 times (full matches)
-        - test win cant move (...)
-
 
 Phases:     0. One Player removes a Stone
             1. All PLayer Place their Stones

@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b15ea622-b002-49c9-8995-ebaa88260455" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/BoardPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/BoardPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/ClientBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/ClientBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clientside/SendSwingWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clientside/SendSwingWorker.java" afterDir="false" />
@@ -15,6 +16,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/Logic/LogicDealer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Logic/LogicDealer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Serverside/Clienthandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Serverside/Clienthandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Serverside/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Serverside/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +76,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main_two">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Muehle" />
@@ -109,8 +111,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main_two" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main_two" />
         <item itemvalue="Application.Server" />
       </list>
     </recent_temporary>
@@ -165,6 +167,8 @@
       <workItem from="1671218113620" duration="899000" />
       <workItem from="1671483425682" duration="5381000" />
       <workItem from="1671566632407" duration="4871000" />
+      <workItem from="1672170590517" duration="4116000" />
+      <workItem from="1672617178521" duration="1546000" />
     </task>
     <servers />
   </component>

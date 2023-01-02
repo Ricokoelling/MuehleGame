@@ -12,7 +12,9 @@ public class SendSwingWorker extends SwingWorker<Boolean, String> {
     private final ClientBoard clientBoard;
     private PlayData serverdata;
 
-
+    /**
+     * Constructor for thread which processes everything while the board is in a idle state to prevent accidental movement
+     */
     public SendSwingWorker(Client client, String player, BoardPanel panel, ClientBoard clientBoard) {
         this.client = client;
         this.player = player;
@@ -29,7 +31,7 @@ public class SendSwingWorker extends SwingWorker<Boolean, String> {
             if (temp != -1) {
                 serverdata = client.getServerdata();
                 if (temp == 1) {
-                    System.out.println("[WORKER] Data was allowed.. " + serverdata.getState());
+                    System.out.println("[WORKER] Data was allowed.. ");
                 } else {
                     System.out.println("[WORKER] Data wasn't allowed");
                 }
@@ -175,7 +177,31 @@ public class SendSwingWorker extends SwingWorker<Boolean, String> {
                 clientBoard.current_state(32);
                 new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
                 break;
+            case 49:
+                panel.remove(serverdata.getStone());
+                clientBoard.remove_board(serverdata.getStone());
+                clientBoard.setPhase(4);
+                clientBoard.current_state(32);
+                new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
+                break;
+            case 40:
+                panel.move_stone(serverdata.getStone(), serverdata.getDestination());
+                clientBoard.move_board(serverdata.getStone(), serverdata.getDestination());
+                clientBoard.current_state(32);
+                new WaitSwingWorker(this.client, this.player, this.panel, this.clientBoard).execute();
+                break;
+            case 41:
+                if (serverdata.getReason() == 4) {
+                    clientBoard.current_state(31);
+                    clientBoard.setThis_player_move(true);
+                } else {
+                    System.err.println("[SEND] Wrong Reason!");
+                }
+                break;
             case 50:
+                clientBoard.move_board(serverdata.getStone(), serverdata.getDestination());
+                panel.move_stone(serverdata.getStone(), serverdata.getDestination());
+                clientBoard.setPhase(5);
                 clientBoard.current_state(50);
                 break;
             default:

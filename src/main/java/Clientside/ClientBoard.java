@@ -25,8 +25,12 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
     private boolean released_mouse_btn_phase_2 = true;
     private boolean this_player_phase_3 = false;
 
-
-    public ClientBoard(String player) throws HeadlessException {
+    /**
+     * Constructor for the board
+     *
+     * @param player inputs Player name
+     */
+    public ClientBoard(String player) {
         this.player_name = player;
 
         this.client = new Client(player);
@@ -42,6 +46,9 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
         init();
     }
 
+    /**
+     * starts connection to the Server
+     */
     private void init() {
         current_state(-1);
         new WaitSwingWorker(this.client, this.player_name, this.panel, this).execute();
@@ -67,12 +74,12 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        // not need but necessary override
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        // not need but necessary override
     }
 
     @Override
@@ -115,31 +122,48 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        // not need but necessary override
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        // not need but necessary override
     }
 
+    /**
+     * inserts a Stone in the clients board
+     */
     public void insert_board(Stone stone) {
         board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = stone;
     }
 
+    /**
+     * removes a Stone from the clients board
+     */
     public void remove_board(Stone stone) {
         board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] = null;
     }
 
+    /**
+     * moves a stone on the clients board
+     */
     public void move_board(Stone start, Stone destination) {
         board[start.getPosOne()][start.getPosTwo()][start.getPosThree()] = null;
         board[destination.getPosOne()][destination.getPosTwo()][destination.getPosThree()] = destination;
     }
 
+    /**
+     * sets current phase, used for sending the right package
+     */
     public void setPhase(int phase) {
         this.phase = phase;
     }
 
+    /**
+     * determines current courser position to give out a Stone
+     *
+     * @return null -> if the position is not a Stone || Stone
+     */
     private Stone get_stone_position(int position_x, int position_y) {
         Stone stone = null;
         if (position_x > ((this.getWidth() / 2) - radius * 3) - circleRadius && position_x < ((this.getWidth() / 2) - radius * 3) - circleRadius + 50 && position_y > ((this.getHeight() / 2) - radius * 3) - circleRadius + 10 && position_y < ((this.getHeight() / 2) - radius * 3) - circleRadius + 60) {   //point [1]
@@ -215,16 +239,26 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
         return stone;
     }
 
+    /**
+     * sets opponent with name and color in panel
+     */
     public void setOpponent(String player) {
         opponent_name = player;
-        client.setOpponent(opponent_name);
         panel.setPlayer_two_name(player);
     }
 
+    /**
+     * sets whether the player should move or not
+     */
     public void setThis_player_move(boolean this_player_move) {
         this.this_player_move = this_player_move;
     }
 
+    /**
+     * while starting a match the server chooses which client starts first. This function rightly tells the client
+     *
+     * @param position true -> this player moves first || false -> player moves second
+     */
     public void setPlayer_Position(boolean position) {
         if (!position) {
             new WaitSwingWorker(this.client, this.player_name, this.panel, this).execute();
@@ -235,74 +269,45 @@ public class ClientBoard extends JFrame implements MouseMotionListener, MouseLis
         }
     }
 
+    /**
+     * sets player in phase 3 since only one is allowed to jump
+     */
     public void setPhase3_player(int x) {
         if (x == 30) {
             this_player_phase_3 = true;
         }
     }
 
+    /**
+     * panel receives the current state
+     */
     protected void current_state(int state) {
         switch (state) {
-            case -1:
-                panel.setCurrent_state("Wait for Server answer!");
-                break;
-            case 10:
-                panel.setCurrent_state(player_name + " you can place!");
-                break;
-            case 11:
-                panel.setCurrent_state(opponent_name + " places a stone!");
-                break;
-            case 12:
-                panel.setCurrent_state(player_name + " not a free positon!");
-                break;
-            case 90:
-                panel.setCurrent_state(player_name + " got a mill!");
-                break;
-            case 91:
-                panel.setCurrent_state(opponent_name + " got a mill!");
-                break;
-            case 0:
-                panel.setCurrent_state(player_name + " removes a Stone!");
-                break;
-            case 1:
-                panel.setCurrent_state(opponent_name + " removes a stone!");
-                break;
-            case 2:
-                panel.setCurrent_state(player_name + " ");
-                break;
-            case 3:
-                panel.setCurrent_state(player_name + " can't remove stone");
-                break;
-            case 29:
-                panel.setCurrent_state(opponent_name + " moves a stone!");
-                break;
-            case 22:
-                panel.setCurrent_state(player_name + " do your move!");
-                break;
-            case 20:
-                panel.setCurrent_state(opponent_name + "  moves a stone!");
-                break;
-            case 21:
-                panel.setCurrent_state(player_name + " move not possible!");
-                break;
-            case 30:
-                panel.setCurrent_state(player_name + " jump!");
-                break;
-            case 32:
-                panel.setCurrent_state(opponent_name + " jumps!");
-                break;
-            case 31:
-                panel.setCurrent_state(player_name + " jump was not possible!");
-                break;
-            case 50:
-                panel.setCurrent_state("shit man someone won");
-                break;
-            default:
-                panel.setCurrent_state("Something went wrong!");
-                break;
+            case -1 -> panel.setCurrent_state("Wait for Server answer!");
+            case 10 -> panel.setCurrent_state(player_name + " you can place!");
+            case 11 -> panel.setCurrent_state(opponent_name + " places a stone!");
+            case 12 -> panel.setCurrent_state(player_name + " not a free positon!");
+            case 90 -> panel.setCurrent_state(player_name + " got a mill!");
+            case 91 -> panel.setCurrent_state(opponent_name + " got a mill!");
+            case 0 -> panel.setCurrent_state(player_name + " removes a Stone!");
+            case 1 -> panel.setCurrent_state(opponent_name + " removes a stone!");
+            case 2 -> panel.setCurrent_state(player_name + " ");
+            case 3 -> panel.setCurrent_state(player_name + " can't remove stone");
+            case 29 -> panel.setCurrent_state(opponent_name + " moves a stone!");
+            case 22 -> panel.setCurrent_state(player_name + " do your move!");
+            case 20 -> panel.setCurrent_state(opponent_name + "  moves a stone!");
+            case 21 -> panel.setCurrent_state(player_name + " move not possible!");
+            case 30 -> panel.setCurrent_state(player_name + " jump!");
+            case 32 -> panel.setCurrent_state(opponent_name + " jumps!");
+            case 31 -> panel.setCurrent_state(player_name + " jump was not possible!");
+            case 50 -> panel.setCurrent_state(player_name + " won the game!!!!!");
+            case 52 -> panel.setCurrent_state(opponent_name + " won the game!!!!");
+            default -> panel.setCurrent_state("Something went wrong!");
         }
     }
 
+    // Prints
+    
     private void print_board() {
         System.out.println("Printboard: ");
         for (int i = 0; i < 3; i++) {

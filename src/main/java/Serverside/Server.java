@@ -26,19 +26,8 @@ public class Server {
         }
     }
 
-    public Server(int port) {
-        try {
-            servs = new ServerSocket(port);
-        } catch (IOException e) {
-            System.err.println("Failed to create Server\nError:");
-            e.printStackTrace();
-        }
-    }
-
     /**
-     * starts client search and if founded will start clienthandler to process every upcoming stream
-     *
-     * @throws IOException yee
+     * starts client search and if founded will start client handler to process every upcoming stream
      */
     public static void start() throws IOException {
         while (true) {

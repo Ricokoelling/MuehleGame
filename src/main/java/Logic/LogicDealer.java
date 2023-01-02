@@ -303,12 +303,14 @@ public class LogicDealer {
         return false;
     }
 
+    /**
+     * checks for all mills on the current board
+     */
     private void check_for_mills() {
         player_one_mill.clear();
         player_two_mill.clear();
         muehle(playerOne);
         muehle(playerTwo);
-        //print_mills();
     }
 
 
@@ -347,6 +349,9 @@ public class LogicDealer {
         return move_is_possible;
     }
 
+    /**
+     * moves a stone from a player
+     */
     public void move_stone(Stone start, Stone destination, String player) {
         board[start.getPosOne()][start.getPosTwo()][start.getPosThree()] = null;
         if (player.equals(playerOne)) {
@@ -394,6 +399,9 @@ public class LogicDealer {
         }
     }
 
+    /**
+     * checks whether the position is clear or isn't
+     */
     public boolean free_position(Stone stone) {
         return board[stone.getPosOne()][stone.getPosTwo()][stone.getPosThree()] == null;
     }
@@ -640,6 +648,9 @@ public class LogicDealer {
         return false;
     }
 
+    /**
+     * checks whether the player owns the Stone or doesn't
+     */
     public boolean player_stone(Stone stone, String player) {
         if (Objects.equals(player, playerOne)) {
             for (Stone plOne_stone : playerOneStones) {
@@ -657,6 +668,9 @@ public class LogicDealer {
         return false;
     }
 
+    /**
+     * @return Stone quantity
+     */
     public int get_player_stones(String player) {
         if (Objects.equals(player, playerOne)) {
             return playerOneStones.size();
@@ -667,21 +681,28 @@ public class LogicDealer {
         }
     }
 
+    /**
+     * @return max quantity of stones
+     */
     public int getMaxstones() {
         return maxstones;
     }
 
+    /**
+     * sets which player is currently "playerOne"
+     */
     public void setPlayerOne(String playerOne) {
         this.playerOne = playerOne;
     }
 
+    /**
+     * sets which player is currently "playerTwo"
+     */
     public void setPlayerTwo(String playerTwo) {
         this.playerTwo = playerTwo;
     }
 
-    /**
-     * prints all mills
-     */
+    //Prints
     private void print_mills() {
         int x = 0;
         System.out.println(playerOne + "'s mills:");
