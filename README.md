@@ -1,19 +1,83 @@
-# MuehleNew
+# MuehleGame ♟️
 
-In dem Modul "Fortgeschrittenes Programmier Praktikum" (FPP) wurde uns die Aufgabe gestellt das Spiel "Mühle" als online (auch offline) Version zu gestalten. 
-Im gesamten Semester wurden uns 2 Meilensteine gestellt. Dieses Projekt hat in seiner original Form eine Note von 1,3 erhalten. Diese Version wurde leicht verändert
-und die letzten kleine Probleme entfernt.
+Eine Java-Implementierung des klassischen Brettspiels **Mühle** – entwickelt im Rahmen des Moduls *Fortgeschrittenes Programmier Praktikum* (FPP) an der FSU Jena. Das Spiel unterstützt sowohl Online-Multiplayer als auch einen lokalen Offline-Modus.
 
-How to Play:
+> 🏆 Bewertet mit **1,3** – diese Version enthält zusätzlich kleinere Bugfixes gegenüber der Abgabe.
 
-1. Zuerst muss der Server gestartet werden.
-2. Danach werden beide Main und Main2 gestartet. (Namen können direkt in dem Spiel geändert werden)
-3. Die Main welche zuerst gestartet wurde ist Spieler 1.
-4. Zuerst setzt jeder spieler 9 seiner Steine. Sollte ein Spieler 3 Steine in einer Reihe haben so hat dieser eine Mühle und darf einen Stein des gegners entfernen.
-5. Wurden alle Steine plaziert geht das Spiel in Phase 2 über und die Spieler dürfen ihre Steine entlang der Linien bewegen. 
-6. Hat ein Spieler 3 Steine so darf dieser nun springen. Der Spieler mit mehr als 3 Steinen darf weiterhin nur sich entlang der Linien bewegen.
-7. Sollte der andere Spieler nun auch nur 3 Steine haben darf dieser auch springen.
+---
 
-Gewonnen hat der Spieler welches es schafft entweder jede Bewegung des Spielers zur blockieren oder diesen unter 2 Steine bringt.
+## Features
 
-Dieses Projekt wurde in meaven 18 erstellt und nutzt die JDK Version: 18
+- 🌐 **Online-Multiplayer** – Zwei Spieler verbinden sich über ein Client-Server-Modell
+- 🖥️ **Offline-Modus** – Lokales Spiel auf einer Maschine möglich
+- 🧠 **Vollständige Spiellogik** – Alle Phasen inkl. Mühlen-Erkennung, Sprung-Phase und Gewinnbedingung
+- 🎨 **Swing-GUI** – Grafisches Spielfeld mit Maus-Steuerung
+
+---
+
+## Spielregeln
+
+Das Spiel läuft in mehreren Phasen ab:
+
+1. **Setzphase** – Jeder Spieler platziert abwechselnd 9 Steine auf dem Feld
+2. **Zugphase** – Steine werden entlang der Linien bewegt
+3. **Sprungphase** – Ein Spieler mit genau 3 Steinen darf auf beliebige freie Felder springen
+
+Bildet ein Spieler eine **Mühle** (3 Steine in einer Reihe), darf er einen Stein des Gegners entfernen.
+
+**Gewonnen** hat, wer den Gegner auf unter 3 Steine reduziert oder alle seine Züge blockiert.
+
+---
+
+## Architektur
+
+```
+Clientside/     → GUI (Swing), Spielfeld, Server-Kommunikation, SwingWorker
+Serverside/     → Server, Client-Handler
+Logic/          → Spiellogik (Mühlen-Erkennung, Phasenverwaltung)
+OfflineGame/    → Lokaler Spielmodus (BoardFrame, OfflineBoardPanel)
+Data/           → Datenklassen (Stone, PlayData)
+```
+
+Der Server verwaltet die Spiellogik zentral und kommuniziert mit beiden Clients über Sockets auf Port `1337`.
+
+---
+
+## Requirements
+
+- Java 18+
+- Maven
+
+---
+
+## Build & Run
+
+```bash
+# Projekt bauen
+mvn package
+```
+
+**Online-Modus:**
+```bash
+# 1. Server starten
+java -cp target/Muehle-1.0-SNAPSHOT.jar Serverside.Server
+
+# 2. Spieler 1 starten
+java -cp target/Muehle-1.0-SNAPSHOT.jar Main
+
+# 3. Spieler 2 starten
+java -cp target/Muehle-1.0-SNAPSHOT.jar Main_two
+```
+
+> Der zuerst gestartete Client ist Spieler 1. Namen können direkt im Spiel geändert werden.
+
+**Offline-Modus:**
+```bash
+java -cp target/Muehle-1.0-SNAPSHOT.jar OfflineGame.BoardFrame
+```
+
+---
+
+## Stack
+
+`Java 18` · `Maven` · `Swing` · `Sockets`
